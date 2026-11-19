@@ -63,12 +63,13 @@ h2{font-family:var(--serif);font-size:20px;margin:28px 0 10px}
 .btn.ghost{background:transparent}
 .btn:disabled{opacity:.4;cursor:default}
 .btn.block{width:100%}
+.btn.small{padding:10px 4px;font-size:14px;white-space:nowrap}
 .icon{appearance:none;border:1px solid var(--line);background:transparent;border-radius:99px;width:38px;height:38px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .icon svg{width:18px;height:18px}
 input[type=text],textarea,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);outline:none}
 input[type=text]:focus,textarea:focus{border-color:var(--ink)}
 .answer{font-size:22px;font-family:var(--serif);text-align:center}
-.inline-in{display:inline-block;width:auto;min-width:5.5em;font-family:var(--serif);font-size:inherit;padding:2px 8px;margin:0 2px;border-radius:8px;border:1.5px dashed var(--seal);background:var(--seal-soft);text-align:center}
+input[type=text].inline-in{display:inline-block;width:auto;min-width:5.5em;font-family:var(--serif);font-size:inherit;padding:2px 8px;margin:0 2px;border-radius:8px;border:1.5px dashed var(--seal);background:var(--seal-soft);text-align:center}
 .sent{font-family:var(--serif);font-size:24px;line-height:1.7;word-break:keep-all}
 .grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
 .grades.three{grid-template-columns:repeat(3,1fr)}
@@ -2054,7 +2055,7 @@ if(!GCATS.includes("Sentence basics"))GCATS.unshift("Sentence basics");
 </script>
 <script>
 "use strict";
-const APP_VERSION="1.1.0";
+const APP_VERSION="1.2.0";
 // ---------- utilities ----------
 const $=s=>document.querySelector(s);
 const view=()=>$("#view");
@@ -2171,6 +2172,24 @@ function startGrammar(forceId){
   if(!q.length){toast("Nothing due — learn a new point from the Grammar tab");return;}
   SESSION={kind:"grammar",queue:q,done:0,total:q.filter(x=>!x.lesson).length,ok:0,wrong:[],forced:!!forceId};nextItem();
 }
+function shuffleLabel(kind,lvl){return (kind==="vocab"?"Words":"Grammar")+" · "+(lvl==="all"?"all levels":lvl==="mine"?"my words":LV[lvl]);}
+function startShuffle(kind,lvl){
+  let ids=[];
+  if(kind==="vocab"){
+    const pool=allVocab().filter(w=>lvl==="all"||(lvl==="mine"?w[4]===0:w[4]===lvl));
+    ids=shuffle(pool.slice()).slice(0,20).map(w=>"v|"+w[0]+"|"+(S.settings.production&&S.cards["v|"+w[0]+"|r"]&&Math.random()<.5?"p":"r"));
+  }else{
+    // one random drill per grammar point, so a round covers as many different points as possible
+    const pts=shuffle(GRAMMAR.filter(g=>lvl==="all"||g.lv===lvl));
+    for(let round=0;ids.length<20&&round<4&&pts.length;round++)
+      for(const g of pts){if(ids.length>=20)break;const free=g.drills.map((_,i)=>"g|"+g.id+"|"+i).filter(id=>!ids.includes(id));if(free.length)ids.push(free[Math.floor(Math.random()*free.length)]);}
+    ids=shuffle(ids);
+  }
+  if(!ids.length){toast("Nothing to practise here yet");return;}
+  SESSION={kind:"shuffle",label:shuffleLabel(kind,lvl),queue:ids.map(id=>({id,shuffle:true})),done:0,total:ids.length,ok:0,wrong:[],again:{kind,lvl}};
+  window.scrollTo(0,0);nextItem();
+}
+function shuffleBtn(kind,lvl,cls,noIcon){return `<button class="btn ${cls||""}" data-shuf="${kind}" data-shuflv="${lvl}">${noIcon?"":"🔀 "}${esc(shuffleLabel(kind,lvl))}</button>`;}
 function startLevelPractice(){
   const l=S.settings.level,now=endOfToday();
   const ids=Object.keys(S.cards).filter(id=>levelOf(id)===l&&(S.settings.production||!id.endsWith("|p")));
@@ -2214,7 +2233,8 @@ function finish(){
   view().innerHTML=`<h1>수고했어요!</h1><p class="sub">Session done.</p>
   <div class="stat"><div><b>${s.total}</b><span>items</span></div><div><b>${wrongUniq.length}</b><span>missed</span></div><div><b>${streak()}</b><span>day streak</span></div></div>
   ${wrongUniq.length?`<h2>Worth another look</h2><div class="card"><ul class="list">${wrongUniq.map(id=>`<li><span>${labelFor(id)}</span></li>`).join("")}</ul></div>`:""}
-  <div class="row" style="margin-top:18px"><a class="btn primary" href="#today">Back to today</a></div>`;
+  <div class="row" style="margin-top:18px">${s.again?`<button class="btn seal" id="again">🔀 Another 20</button>`:""}<a class="btn ${s.again?"":"primary"}" href="#today">Back to today</a></div>`;
+  if(s.again)$("#again").onclick=()=>startShuffle(s.again.kind,s.again.lvl);
   window.scrollTo(0,0);
 }
 function labelFor(id){
@@ -2224,7 +2244,7 @@ function labelFor(id){
   return `<span class="ko">${esc(d.q.replace("___",d.a[0]))}</span> <span class="pill n">${esc(g.form)}</span>`;
 }
 function progressBar(){if(!SESSION)return"";const p=SESSION.total?Math.min(100,SESSION.done/SESSION.total*100):0;
-  return `<div class="spread small muted"><span>${SESSION.kind==="vocab"?"Vocabulary":SESSION.kind==="level"?LV[S.settings.level]+" practice":"Grammar"} · ${Math.min(SESSION.done,SESSION.total)}/${SESSION.total}</span><a href="#today" class="muted" data-quit>End</a></div><div class="progress"><i style="width:${p}%"></i></div>`;}
+  return `<div class="spread small muted"><span>${SESSION.kind==="vocab"?"Vocabulary":SESSION.kind==="level"?LV[S.settings.level]+" practice":SESSION.kind==="shuffle"?"Shuffle: "+esc(SESSION.label):"Grammar"} · ${Math.min(SESSION.done,SESSION.total)}/${SESSION.total}</span><a href="#today" class="muted" data-quit>End</a></div><div class="progress"><i style="width:${p}%"></i></div>`;}
 function gradeButtons(id,correct){
   const labels=[["Again",0],["Hard",1],["Good",2],["Easy",3]];
   const set=correct===false?[labels[0],labels[2]]:correct===true?labels.slice(1):labels;
@@ -2279,6 +2299,7 @@ function renderCloze(it,gid,idx){
     <p class="muted">${esc(d.en)}</p>
     <div id="res"></div></div><div id="act"><button class="btn primary block" id="chk">Check</button><button class="btn ghost block" id="idk" style="margin-top:8px">I don't know</button></div>`;
   $("#hint").onclick=()=>{$("#pat").innerHTML=`<b>${esc(g.form)}</b> — ${esc(g.meaning)}`;};
+  if(it.shuffle&&!S.seenG[gid])$("#hint").click();
   const check=(given)=>{
     const ok=given!==null&&d.a.some(a=>norm(a)===norm(given));
     $("#in").disabled=true;
@@ -2340,6 +2361,8 @@ function renderToday(){
     <div class="small"><b>${LV[lv]}</b> · ${ls.wordsStarted}/${ls.words} words · ${ls.gramSeen}/${ls.gram} grammar points</div>
     <div class="progress" style="margin:8px 0 12px"><i style="width:${(ls.wordsStarted+ls.gramSeen)/Math.max(1,ls.words+ls.gram)*100}%"></i></div>
     <button class="btn block" id="sl">Practice ${LV[lv]} (mixed review)</button></div>
+  <div class="card"><div class="spread small"><b>🔀 Shuffle practice</b><span class="muted">20 random items</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">${shuffleBtn("vocab",lv,"small",1)}${shuffleBtn("grammar",lv,"small",1)}${shuffleBtn("vocab","all","small",1)}${shuffleBtn("grammar","all","small",1)}</div></div>
   <div class="card"><div class="spread"><div><h2 style="margin:0">Vocabulary</h2><p class="muted small" style="margin:2px 0 0">${vd} due · ${vn} new${!vn&&ls.wordsStarted>=ls.words?` · ${LV[lv]} words all started`:""}</p></div>
     <button class="btn ${vd+vn?"seal":""}" id="sv" ${vd+vn?"":"disabled"}>${vd+vn?"Start":"Done ✓"}</button></div></div>
   <div class="card"><div class="spread"><div><h2 style="margin:0">Grammar</h2><p class="muted small" style="margin:2px 0 0">${gd} due${gp?` · new: <span class="ko">${esc(gp.form)}</span>`:ls.gramSeen>=ls.gram?` · ${LV[lv]} grammar all learned`:""}</p></div>
@@ -2358,6 +2381,7 @@ function renderGrammarList(){
     return `<li data-open="${g.id}"><div><div class="ko" style="font-size:18px">${esc(g.form)}</div><div class="muted small">${esc(g.meaning)}</div></div><div style="text-align:right;flex-shrink:0">${status}<div class="muted" style="font-size:11px;margin-top:3px">${LV[g.lv]}</div></div></li>`;};
   view().innerHTML=`<h1>문법</h1><p class="sub">${seen} of ${GRAMMAR.length} points learned. New points come from your level (${LV[S.settings.level]}); change it on the Today tab. Tap any point to read it, learn it early, or drill it. Levels follow typical textbook order and are approximate.</p>
   <div class="row" style="margin-bottom:6px;gap:5px;flex-wrap:nowrap;align-items:center"><span class="small muted">TOPIK</span>${[1,2,3,4,5,6,0].map(l=>`<button class="btn ${gLevel===l?"primary":""}" data-lv="${l}" style="padding:7px 0;flex:1;font-size:14px">${l||"All"}</button>`).join("")}</div>
+  <div class="row" style="margin:10px 0 4px;gap:8px">${gLevel?shuffleBtn("grammar",gLevel,"seal"):""}${shuffleBtn("grammar","all",gLevel?"":"seal")}</div>
   ${GCATS.map(cat=>{const gs=GRAMMAR.filter(g=>g.cat===cat&&(!gLevel||g.lv===gLevel)).sort((a,b)=>a.lv-b.lv||a.ord-b.ord);if(!gs.length)return"";
     const done=gs.filter(g=>S.seenG[g.id]).length;
     return `<h2>${esc(cat)} <span class="muted small" style="font-family:var(--sans);font-weight:400">${done}/${gs.length}</span></h2><div class="card" style="padding:4px 18px"><ul class="list">${gs.map(item).join("")}</ul></div>`;}).join("")}`;
@@ -2422,6 +2446,7 @@ function renderWords(){
   const counts={new:0,learning:0,known:0};all.forEach(w=>counts[wordStatus(w)[0]]++);
   view().innerHTML=`<h1>단어</h1><p class="sub">${wLevel===7?"All levels":LV[wLevel]}: ${all.length} words · ${counts.learning} learning · ${counts.known} known</p>
   <div class="row" style="margin-bottom:12px;gap:5px;flex-wrap:nowrap;align-items:center"><span class="small muted">TOPIK</span>${[1,2,3,4,5,6,0,7].map(l=>`<button class="btn ${wLevel===l?"primary":""}" data-wl="${l}" style="padding:7px 0;flex:1;font-size:14px">${l===7?"All":l===0?"Mine":l}</button>`).join("")}</div>
+  <div class="row" style="margin:0 0 14px;gap:8px">${wLevel===7?"":shuffleBtn("vocab",wLevel===0?"mine":wLevel,"seal")}${shuffleBtn("vocab","all",wLevel===7?"seal":"")}</div>
   <div class="card"><h2 style="margin-top:0">Add your own words</h2>
     <p class="muted small" style="margin-top:0">One per line: <span class="ko">단어 = meaning</span>. ${SAMPLE?"Or just the Korean word — Claude fills in the meaning and an example.":""} Words you look up in Sajeon are a good source.</p>
     <textarea id="add" rows="4" lang="ko" placeholder="망설이다 = to hesitate&#10;꾸준히"></textarea>
@@ -2504,6 +2529,7 @@ window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
   const say=e.target.closest("[data-say]");if(say){e.preventDefault();speak(say.dataset.say);return;}
   const g=e.target.closest("[data-g]");if(g&&SESSION){const a=$("#act");answer(+g.dataset.g,a&&a.dataset.given,a&&a.dataset.exp);return;}
+  const sh=e.target.closest("[data-shuf]");if(sh){const v=sh.dataset.shuflv;startShuffle(sh.dataset.shuf,v==="all"||v==="mine"?v:+v);return;}
   const op=e.target.closest("[data-open]");if(op){renderLesson(op.dataset.open,false);return;}
   const wg=e.target.closest("[data-wg]");if(wg){writeTarget=wg.dataset.wg;if(location.hash==="#write"){e.preventDefault();route();}return;}
   const li=e.target.closest("[data-say-li]");if(li){speak(li.dataset.sayLi);return;}

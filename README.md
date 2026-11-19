@@ -2,9 +2,8 @@
 
 A small Korean practice app: vocabulary and grammar drills with spaced repetition. Built with Claude.
 
-- **Levels**: TOPIK 1–6. Pick a level and new words and grammar come from it; "Practice TOPIK n" runs a mixed review of that level.
-- **Vocabulary**: ~900 words (~150 per TOPIK level) with example sentences, Korean → English and English → Korean (typed). Add your own words.
-- **Grammar**: 117 points across TOPIK 1–6, grouped by topic, each with an explanation and fill-in drills.
+- **Vocabulary**: ~150 intermediate words with example sentences, Korean → English and English → Korean (typed). Add your own words.
+- **Grammar**: 74 points (core → upper-intermediate) grouped by topic, each with an explanation and fill-in drills.
 - **Write**: write your own sentence and Claude corrects it (needs your own Anthropic API key, stored only on your device).
 - Works offline once installed. Progress is stored on the device; use Progress → Download backup to save it.
 

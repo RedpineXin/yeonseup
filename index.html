@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>연습 Yeonseup</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f5f0e6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171512" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="연습">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f0e6; --card:#fffdf8; --ink:#1e1b17; --muted:#6f685d; --line:#e2d9c8;
+  --seal:#b8432f; --seal-soft:#f3dcd4; --jade:#2f6b57; --jade-soft:#d7e8df; --gold:#a8792a;
+  --shadow:0 1px 0 rgba(30,27,23,.04),0 8px 24px -12px rgba(30,27,23,.18);
+  --serif:"Gowun Batang",ui-serif,Georgia,serif; --sans:"IBM Plex Sans KR",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#171512; --card:#211e1a; --ink:#f0e9dc; --muted:#a59c8d; --line:#3a352d;
+  --seal:#e0705b; --seal-soft:#3d2620; --jade:#6fbf9f; --jade-soft:#1f332b; --gold:#d6a752;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 8px 24px -12px rgba(0,0,0,.6);}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+.wrap{max-width:640px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
+nav{padding-bottom:env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 14px}
+.brand{display:flex;align-items:baseline;gap:8px}
+.brand .seal{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--seal);letter-spacing:.02em}
+.brand .latin{font-size:13px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block}
+.sync.ok i{background:var(--jade)} .sync.err i{background:var(--seal)}
+nav{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line);z-index:5}
+nav .in{max-width:640px;margin:0 auto;display:flex}
+nav a{flex:1;text-align:center;padding:10px 0 14px;font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.03em}
+nav a b{display:block;font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);opacity:.55}
+nav a.on{color:var(--seal)} nav a.on b{color:var(--seal);opacity:1}
+h1{font-family:var(--serif);font-weight:700;font-size:28px;margin:6px 0 4px;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:20px;margin:28px 0 10px}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.big{font-family:var(--serif);font-size:44px;line-height:1.15;font-weight:700;margin:6px 0;word-break:keep-all}
+.ko{font-family:var(--serif)}
+.muted{color:var(--muted)} .small{font-size:13px}
+.pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;background:var(--seal-soft);color:var(--seal);font-weight:500}
+.pill.j{background:var(--jade-soft);color:var(--jade)}
+.pill.n{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.btn{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:11px 16px;cursor:pointer;font-weight:500;transition:transform .05s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.seal{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.block{width:100%}
+.icon{appearance:none;border:1px solid var(--line);background:transparent;border-radius:99px;width:38px;height:38px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.icon svg{width:18px;height:18px}
+input[type=text],textarea,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);outline:none}
+input[type=text]:focus,textarea:focus{border-color:var(--ink)}
+.answer{font-size:22px;font-family:var(--serif);text-align:center}
+.inline-in{display:inline-block;width:auto;min-width:5.5em;font-family:var(--serif);font-size:inherit;padding:2px 8px;margin:0 2px;border-radius:8px;border:1.5px dashed var(--seal);background:var(--seal-soft);text-align:center}
+.sent{font-family:var(--serif);font-size:24px;line-height:1.7;word-break:keep-all}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.grades.three{grid-template-columns:repeat(3,1fr)}
+.grades .btn{padding:12px 4px;font-size:14px}
+.grades .btn small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.grades .btn.sug{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.verdict{font-weight:600;margin:14px 0 4px}
+.verdict.ok{color:var(--jade)} .verdict.no{color:var(--seal)}
+.progress{height:4px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 16px}
+.progress i{display:block;height:100%;background:var(--seal);transition:width .3s}
+.ex{border-left:3px solid var(--line);padding:4px 0 4px 12px;margin:12px 0}
+.ex .ko{font-size:18px}
+.list{list-style:none;padding:0;margin:0}
+.list li{padding:12px 2px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer}
+.list li:last-child{border-bottom:0}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{display:block;font-family:var(--serif);font-size:26px}
+.stat span{font-size:12px;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:4px;height:90px;margin-top:8px}
+.bars div{flex:1;background:var(--seal);opacity:.8;border-radius:3px 3px 0 0;min-height:2px;position:relative}
+.bars div.zero{background:var(--line)}
+.notes{white-space:pre-line}
+a{color:var(--seal)}
+a.btn{color:inherit;text-decoration:none}
+a.btn.primary{color:var(--paper)}
+.hide{display:none!important}
+.fb{background:var(--paper);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:15px}
+.dots{display:inline-block;animation:p 1s infinite}
+@keyframes p{50%{opacity:.3}}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-size:14px;z-index:9;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:10;padding:20px}
+.modal .card{max-width:420px;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="seal">연습</span><span class="latin">Yeonseup</span></div>
+    <div class="sync" id="sync"><i></i><span>on this device</span></div>
+  </header>
+  <main id="view"></main>
+</div>
+<nav><div class="in">
+  <a href="#today" data-t="today"><b>오늘</b>Today</a>
+  <a href="#grammar" data-t="grammar"><b>문법</b>Grammar</a>
+  <a href="#write" data-t="write"><b>작문</b>Write</a>
+  <a href="#words" data-t="words"><b>단어</b>Words</a>
+  <a href="#stats" data-t="stats"><b>기록</b>Progress</a>
+</div></nav>
+<div class="toast" id="toast"></div>
+<script>
+// Content for Korean practice app. Vocab: [korean, english, example, exampleEnglish]
+const VOCAB = [
+["경험","experience","해외에서 일한 경험이 있어요.","I have experience working abroad."],
+["기회","opportunity, chance","좋은 기회를 놓치지 마세요.","Don't miss a good opportunity."],
+["결정하다","to decide","아직 결정하지 못했어요.","I haven't been able to decide yet."],
+["준비하다","to prepare","발표를 준비하고 있어요.","I'm preparing a presentation."],
+["계획","plan","주말에 계획 있어요?","Do you have plans for the weekend?"],
+["약속","appointment, plans; promise","오늘 저녁에 약속이 있어요.","I have plans to meet someone tonight."],
+["연락하다","to contact, get in touch","도착하면 연락할게요.","I'll get in touch when I arrive."],
+["이해하다","to understand","무슨 뜻인지 이해했어요.","I understood what it means."],
+["설명하다","to explain","다시 한번 설명해 주시겠어요?","Could you explain it once more?"],
+["비슷하다","to be similar","두 단어는 뜻이 비슷해요.","The two words are similar in meaning."],
+["다르다","to be different","우리는 생각이 서로 달라요.","We think differently."],
+["중요하다","to be important","건강이 제일 중요해요.","Health is the most important thing."],
+["필요하다","to be necessary, need","도움이 필요하면 말하세요.","Tell me if you need help."],
+["가능하다","to be possible","내일까지 가능해요?","Is it possible by tomorrow?"],
+["편하다","to be comfortable, convenient","이 신발은 정말 편해요.","These shoes are really comfortable."],
+["불편하다","to be uncomfortable, inconvenient","여기는 교통이 좀 불편해요.","Transport here is a bit inconvenient."],
+["익숙하다","to be used to, familiar","아직 한국 생활에 익숙하지 않아요.","I'm not used to life in Korea yet."],
+["걱정하다","to worry","너무 걱정하지 마세요.","Don't worry too much."],
+["실수","mistake","실수해도 괜찮아요.","It's okay to make mistakes."],
+["실력","skill, ability","한국어 실력이 많이 늘었어요.","Your Korean has improved a lot."],
+["늘다","to increase, improve","손님이 점점 늘고 있어요.","Customers are gradually increasing."],
+["줄이다","to reduce, cut down","커피를 줄이려고 해요.","I'm trying to cut down on coffee."],
+["바꾸다","to change, swap","비밀번호를 바꿨어요.","I changed my password."],
+["고르다","to choose, pick","하나만 고르세요.","Pick just one."],
+["잃어버리다","to lose (an object)","지갑을 잃어버렸어요.","I lost my wallet."],
+["잊어버리다","to forget","그 사람 이름을 잊어버렸어요.","I forgot that person's name."],
+["기억하다","to remember","저를 기억하세요?","Do you remember me?"],
+["느끼다","to feel","요즘 스트레스를 많이 느껴요.","I feel a lot of stress lately."],
+["생각나다","to come to mind, think of","갑자기 좋은 생각이 났어요.","A good idea suddenly came to me."],
+["관심","interest","요즘 요리에 관심이 생겼어요.","I've recently become interested in cooking."],
+["취미","hobby","취미가 뭐예요?","What's your hobby?"],
+["직장","workplace, job","직장이 집에서 가까워요.","My workplace is close to home."],
+["회의","meeting","오후에 회의가 있어요.","I have a meeting in the afternoon."],
+["출장","business trip","다음 주에 출장을 가요.","I'm going on a business trip next week."],
+["월급","monthly salary","월급날이 언제예요?","When is payday?"],
+["휴가","vacation, time off","휴가를 내고 여행을 갔어요.","I took time off and went on a trip."],
+["동료","colleague","동료들하고 점심을 먹었어요.","I had lunch with my colleagues."],
+["상사","boss, superior","상사에게 보고했어요.","I reported to my boss."],
+["서류","document(s), paperwork","이 서류에 사인해 주세요.","Please sign this document."],
+["신청하다","to apply (for), sign up","장학금을 신청했어요.","I applied for a scholarship."],
+["지원하다","to apply (for a job); to support","그 회사에 지원했어요.","I applied to that company."],
+["면접","(job) interview","내일 면접을 봐요.","I have an interview tomorrow."],
+["졸업하다","to graduate","작년에 대학교를 졸업했어요.","I graduated from university last year."],
+["전공","major (field of study)","전공이 뭐였어요?","What was your major?"],
+["심리학","psychology","대학원에서 심리학을 공부했어요.","I studied psychology in grad school."],
+["외국어","foreign language","외국어를 배우는 게 재미있어요.","Learning foreign languages is fun."],
+["발음","pronunciation","발음이 정말 좋네요.","Your pronunciation is really good."],
+["문법","grammar","문법이 좀 헷갈려요.","The grammar is a bit confusing."],
+["헷갈리다","to be confused, mix up","두 표현이 헷갈려요.","I mix up the two expressions."],
+["단어","word","모르는 단어가 많아요.","There are a lot of words I don't know."],
+["뜻","meaning","이 단어는 무슨 뜻이에요?","What does this word mean?"],
+["표현","expression","자연스러운 표현을 배우고 싶어요.","I want to learn natural expressions."],
+["자연스럽다","to be natural","이 문장이 자연스러워요?","Does this sentence sound natural?"],
+["어색하다","to be awkward","처음에는 좀 어색했어요.","It was a bit awkward at first."],
+["대화","conversation","한국 사람하고 대화하는 게 아직 어려워요.","Having conversations with Koreans is still hard."],
+["연습하다","to practice","매일 말하기를 연습해요.","I practice speaking every day."],
+["복습하다","to review (study)","배운 내용을 복습했어요.","I reviewed what I learned."],
+["흐리다","to be cloudy, overcast","오늘은 하늘이 흐려요.","The sky is overcast today."],
+["맑다","to be clear (weather), clean","내일은 날씨가 맑을 거예요.","The weather will be clear tomorrow."],
+["습하다","to be humid","여름에는 너무 습해요.","It's too humid in summer."],
+["계절","season","어느 계절을 제일 좋아해요?","Which season do you like best?"],
+["환경","environment","환경을 보호해야 해요.","We have to protect the environment."],
+["쓰레기","trash, garbage","쓰레기는 분리해서 버리세요.","Separate your trash when you throw it out."],
+["버리다","to throw away","오래된 옷을 버렸어요.","I threw away my old clothes."],
+["이사하다","to move (house)","다음 달에 이사해요.","I'm moving next month."],
+["월세","monthly rent","월세가 너무 올랐어요.","The rent went up too much."],
+["동네","neighborhood","이 동네는 조용해요.","This neighborhood is quiet."],
+["시끄럽다","to be noisy","옆집이 너무 시끄러워요.","The neighbors are too noisy."],
+["주변","surroundings, nearby area","집 주변에 공원이 있어요.","There's a park near my place."],
+["교통","traffic, transportation","서울은 교통이 편리해요.","Seoul has convenient transportation."],
+["갈아타다","to transfer (transport)","다음 역에서 2호선으로 갈아타세요.","Transfer to Line 2 at the next station."],
+["막히다","to be blocked, jammed","퇴근 시간에는 길이 많이 막혀요.","Traffic is really bad at rush hour."],
+["출근하다","to go to work","보통 아홉 시까지 출근해요.","I usually get to work by nine."],
+["퇴근하다","to leave work","오늘은 일찍 퇴근했어요.","I left work early today."],
+["건강","health","건강에 좋은 음식을 먹어야 해요.","You should eat healthy food."],
+["감기","a cold","감기에 걸렸어요.","I caught a cold."],
+["낫다","to get better, recover","빨리 나으세요.","Get well soon."],
+["다치다","to get hurt","축구하다가 다리를 다쳤어요.","I hurt my leg playing soccer."],
+["살이 찌다","to gain weight","요즘 살이 좀 쪘어요.","I've put on a bit of weight lately."],
+["살을 빼다","to lose weight","살을 빼려고 운동해요.","I work out to lose weight."],
+["스트레스를 받다","to get stressed","일 때문에 스트레스를 받아요.","I get stressed because of work."],
+["푹 쉬다","to rest well","주말에 푹 쉬었어요.","I rested well over the weekend."],
+["지치다","to be exhausted, worn out","하루 종일 일해서 지쳤어요.","I'm worn out from working all day."],
+["기분","mood, feeling","오늘 기분이 어때요?","How are you feeling today?"],
+["속상하다","to be upset, hurt","시험을 망쳐서 속상해요.","I'm upset because I messed up the exam."],
+["답답하다","to feel frustrated, stifled","말이 안 통해서 답답했어요.","It was frustrating not being able to communicate."],
+["부럽다","to be envious","여행 가는 친구가 부러워요.","I envy my friend who's going on a trip."],
+["아쉽다","to be a shame, regrettable","벌써 끝나서 아쉬워요.","It's a shame it's already over."],
+["창피하다","to be embarrassed","길에서 넘어져서 창피했어요.","I was embarrassed because I fell on the street."],
+["감동하다","to be moved, touched","그 영화를 보고 감동했어요.","I was moved by that movie."],
+["고민","worry, dilemma","요즘 진로 때문에 고민이 많아요.","I've been agonizing over my career path lately."],
+["진로","career path, future course","진로를 아직 못 정했어요.","I haven't decided on my career path yet."],
+["성격","personality","그 사람은 성격이 좋아요.","That person has a nice personality."],
+["친절하다","to be kind","직원이 정말 친절했어요.","The staff were really kind."],
+["솔직하다","to be honest, frank","솔직하게 말해 주세요.","Please tell me honestly."],
+["꼼꼼하다","to be meticulous, thorough","그 사람은 일을 꼼꼼하게 해요.","That person works meticulously."],
+["게으르다","to be lazy","주말에는 좀 게을러져요.","I get a bit lazy on weekends."],
+["부지런하다","to be diligent, hardworking","우리 엄마는 정말 부지런하세요.","My mom is really hardworking."],
+["사귀다","to make friends with; to date","한국 친구를 많이 사귀었어요.","I made a lot of Korean friends."],
+["소개하다","to introduce","제 친구를 소개할게요.","Let me introduce my friend."],
+["초대하다","to invite","생일 파티에 초대해 줘서 고마워요.","Thanks for inviting me to your birthday party."],
+["축하하다","to congratulate","졸업 축하해요!","Congratulations on your graduation!"],
+["포장하다","to wrap; to pack to go","남은 음식은 포장해 주세요.","Please pack up the leftovers to go."],
+["주문하다","to order","뭐 주문하시겠어요?","What would you like to order?"],
+["계산하다","to pay (the bill); to calculate","계산은 제가 할게요.","I'll pay."],
+["할인","discount","학생은 할인돼요.","Students get a discount."],
+["영수증","receipt","영수증 드릴까요?","Would you like a receipt?"],
+["환불하다","to refund","이거 환불할 수 있어요?","Can I get a refund on this?"],
+["교환하다","to exchange","사이즈가 안 맞아서 교환하고 싶어요.","It doesn't fit, so I'd like to exchange it."],
+["품절","sold out","그 상품은 품절됐어요.","That item is sold out."],
+["가격","price","가격이 적당해요.","The price is reasonable."],
+["적당하다","to be appropriate, moderate","운동은 적당히 하는 게 좋아요.","It's good to exercise in moderation."],
+["예약하다","to reserve, book","식당을 예약했어요.","I booked a restaurant."],
+["취소하다","to cancel","비행기 표를 취소했어요.","I canceled my plane ticket."],
+["연기되다","to be postponed","회의가 다음 주로 연기됐어요.","The meeting was postponed to next week."],
+["서두르다","to hurry","늦었으니까 서두르세요.","We're late, so hurry up."],
+["도착하다","to arrive","몇 시에 도착해요?","What time do you arrive?"],
+["출발하다","to depart, leave","기차가 곧 출발해요.","The train leaves soon."],
+["경치","scenery, view","여기 경치가 정말 아름다워요.","The scenery here is really beautiful."],
+["구경하다","to look around, sightsee","시장을 구경했어요.","I looked around the market."],
+["짐","luggage, bags","짐이 너무 무거워요.","My bags are too heavy."],
+["길을 잃다","to get lost","처음 왔을 때 길을 잃었어요.","I got lost when I first came."],
+["사고","accident","오는 길에 사고가 났어요.","There was an accident on the way."],
+["갑자기","suddenly","갑자기 비가 왔어요.","It suddenly started raining."],
+["아마","probably","아마 내일 올 거예요.","He'll probably come tomorrow."],
+["혹시","by any chance","혹시 시간 있어요?","Do you have time, by any chance?"],
+["역시","as expected","역시 집밥이 최고예요.","As expected, home cooking is the best."],
+["아직","still, (not) yet","아직 안 먹었어요.","I haven't eaten yet."],
+["벌써","already","벌써 12월이에요.","It's already December."],
+["점점","gradually, more and more","날씨가 점점 추워져요.","It's getting colder and colder."],
+["자주","often","자주 연락해요.","Let's keep in touch often."],
+["가끔","sometimes","가끔 한국 드라마를 봐요.","I sometimes watch Korean dramas."],
+["거의","almost","숙제를 거의 다 했어요.","I've almost finished my homework."],
+["꼭","definitely, without fail","꼭 다시 오세요.","Be sure to come again."],
+["일부러","on purpose","일부러 그런 거 아니에요.","I didn't do it on purpose."],
+["겨우","barely, only just","겨우 시간에 맞춰 도착했어요.","I barely made it on time."],
+["오히려","rather, on the contrary","쉬니까 오히려 더 피곤해요.","Resting actually makes me more tired."],
+["대신","instead (of)","커피 대신 차를 마셔요.","I drink tea instead of coffee."],
+["덕분에","thanks to","덕분에 잘 끝났어요.","Thanks to you, it went well."],
+["원래","originally, normally","여기는 원래 이렇게 추워요?","Is it always this cold here?"],
+["결국","in the end, eventually","결국 포기했어요.","In the end, I gave up."],
+["포기하다","to give up","포기하지 마세요.","Don't give up."],
+["노력하다","to make an effort, try hard","열심히 노력하고 있어요.","I'm putting in a lot of effort."],
+["성공하다","to succeed","계획이 성공했어요.","The plan succeeded."],
+["실패하다","to fail","실패해도 다시 하면 돼요.","Even if you fail, you can just try again."],
+["목표","goal","올해 목표가 뭐예요?","What's your goal for this year?"],
+["사회복지","social welfare","사회복지 분야에서 일해요.","I work in the social welfare field."]
+];
+
+// Grammar points. Drill: q has ___ where the answer goes; h = hint shown in brackets; a = accepted answers; en = translation
+const GRAMMAR = [
+{id:"aseo",form:"-아/어서",meaning:"because (cause → result); and then (sequence)",
+ notes:"Attach to the verb stem with 아/어 harmony: 가다 → 가서, 먹다 → 먹어서, 하다 → 해서. Never put past tense before it (✗ 갔어서). Can't be followed by a command or suggestion — use -(으)니까 for that. For sequence, the two actions are closely linked (go and then do something there).",
+ ex:[["배가 고파서 밥을 먹었어요.","I was hungry, so I ate."],["친구를 만나서 영화를 봤어요.","I met a friend and (then) we watched a movie."]],
+ drills:[
+  {q:"배가 ___ 라면을 끓였어요.",h:"고프다",a:["고파서"],en:"I was hungry, so I made ramyeon."},
+  {q:"친구를 ___ 같이 영화를 봤어요.",h:"만나다",a:["만나서"],en:"I met a friend and we watched a movie together."},
+  {q:"길이 많이 ___ 늦었어요.",h:"막히다",a:["막혀서"],en:"Traffic was really bad, so I was late."},
+  {q:"오늘은 너무 ___ 일찍 잘 거예요.",h:"피곤하다",a:["피곤해서"],en:"I'm too tired today, so I'll go to bed early."}]},
+{id:"eunikka",form:"-(으)니까",meaning:"because, since (reason; OK before commands/suggestions)",
+ notes:"Consonant stem + 으니까, vowel stem + 니까: 먹으니까, 가니까. ㄹ-stem drops ㄹ: 살다 → 사니까. ㅂ-irregular: 덥다 → 더우니까. Past tense is allowed (갔으니까). Unlike -아/어서, it can be followed by -세요, -(으)ㅂ시다, -(으)ㄹ까요.",
+ ex:[["비가 오니까 우산을 가져가세요.","It's raining, so take an umbrella."],["시간이 없으니까 택시를 탑시다.","We don't have time, so let's take a taxi."]],
+ drills:[
+  {q:"비가 ___ 우산을 가져가세요.",h:"오다",a:["오니까"],en:"It's raining, so take an umbrella."},
+  {q:"시간이 ___ 택시를 탑시다.",h:"없다",a:["없으니까"],en:"We don't have time, so let's take a taxi."},
+  {q:"날씨가 ___ 창문 좀 열까요?",h:"덥다",a:["더우니까"],en:"It's hot, so shall we open the window?"},
+  {q:"지금은 ___ 나중에 전화할게요.",h:"바쁘다",a:["바쁘니까"],en:"I'm busy right now, so I'll call later."}]},
+{id:"gittaemune",form:"-기 때문에",meaning:"because (formal, emphasises the reason)",
+ notes:"Stem + 기 때문에: 있기 때문에, 바쁘기 때문에. Nouns: N(이)기 때문에, or N 때문에 (\"because of N\"). Past: 했기 때문에. Like -아/어서, avoid it before commands.",
+ ex:[["내일 시험이 있기 때문에 오늘 공부해야 해요.","Because I have an exam tomorrow, I have to study today."],["비 때문에 경기가 취소됐어요.","The game was canceled because of the rain."]],
+ drills:[
+  {q:"내일 시험이 ___ 오늘 밤에 공부해야 해요.",h:"있다 + 기 때문에",a:["있기 때문에"],en:"Because I have an exam tomorrow, I have to study tonight."},
+  {q:"그 식당은 음식이 ___ 항상 사람이 많아요.",h:"맛있다 + 기 때문에",a:["맛있기 때문에"],en:"That restaurant is always busy because the food is good."},
+  {q:"저는 ___ 할인을 받을 수 있어요.",h:"학생이다 + 기 때문에",a:["학생이기 때문에"],en:"I can get a discount because I'm a student."},
+  {q:"어제 늦게 ___ 오늘 피곤해요.",h:"자다, past + 기 때문에",a:["잤기 때문에"],en:"I'm tired today because I went to bed late yesterday."}]},
+{id:"neunde",form:"-는데 / -(으)ㄴ데",meaning:"background info (\"…, and/so…\"); contrast (\"but\")",
+ notes:"Action verbs and 있다/없다: stem + 는데 (오는데, 있는데). Adjectives: vowel stem + ㄴ데, consonant stem + 은데 (예쁜데, 작은데). Noun: N인데. Past for everything: -았/었는데 (봤는데). Used to set the scene before a question, request or contrast.",
+ ex:[["지금 비가 오는데 우산 있어요?","It's raining now — do you have an umbrella?"],["이 옷은 예쁜데 좀 비싸요.","These clothes are pretty, but a bit expensive."]],
+ drills:[
+  {q:"지금 비가 ___ 우산 있어요?",h:"오다",a:["오는데"],en:"It's raining now — do you have an umbrella?"},
+  {q:"이 옷은 ___ 좀 비싸요.",h:"예쁘다",a:["예쁜데"],en:"These clothes are pretty but a bit expensive."},
+  {q:"어제 그 영화를 ___ 정말 재미있었어요.",h:"보다, past",a:["봤는데"],en:"I saw that movie yesterday, and it was really fun."},
+  {q:"저는 키가 ___ 동생은 키가 커요.",h:"작다",a:["작은데"],en:"I'm short, but my younger sibling is tall."}]},
+{id:"jiman",form:"-지만",meaning:"but, although",
+ notes:"Stem + 지만, works with everything: 어렵지만, 했지만 (past), 학생이지만. Plainer, more clearly contrastive than -는데.",
+ ex:[["한국어는 어렵지만 재미있어요.","Korean is hard but fun."]],
+ drills:[
+  {q:"한국어는 ___ 재미있어요.",h:"어렵다",a:["어렵지만"],en:"Korean is difficult but fun."},
+  {q:"열심히 ___ 시험에 떨어졌어요.",h:"공부하다, past",a:["공부했지만"],en:"I studied hard, but I failed the exam."},
+  {q:"값은 ___ 품질이 좋아요.",h:"싸다",a:["싸지만"],en:"It's cheap, but the quality is good."},
+  {q:"그 식당은 ___ 음식이 정말 맛있어요.",h:"작다",a:["작지만"],en:"That restaurant is small, but the food is really good."}]},
+{id:"eumyeon",form:"-(으)면",meaning:"if, when",
+ notes:"Vowel or ㄹ stem + 면 (가면, 살면); consonant stem + 으면 (먹으면). ㅂ-irregular: 추우면. ㄷ-irregular: 들으면. For a hypothetical past: -았/었으면.",
+ ex:[["시간이 있으면 같이 커피 마셔요.","If you have time, let's grab coffee."]],
+ drills:[
+  {q:"시간이 ___ 같이 커피 마셔요.",h:"있다",a:["있으면"],en:"If you have time, let's grab a coffee."},
+  {q:"서울에 ___ 연락해 주세요.",h:"오다",a:["오면"],en:"Get in touch when you come to Seoul."},
+  {q:"날씨가 ___ 공원에 갈 거예요.",h:"좋다",a:["좋으면"],en:"If the weather is nice, I'll go to the park."},
+  {q:"이 약을 ___ 괜찮아질 거예요.",h:"먹다",a:["먹으면"],en:"If you take this medicine, you'll feel better."}]},
+{id:"euryeogo",form:"-(으)려고",meaning:"in order to, intending to",
+ notes:"Action verbs only. Vowel/ㄹ stem + 려고 (가려고, 만들려고), consonant stem + 으려고 (찍으려고). Not followed by commands/suggestions (use -(으)러 or -기 위해서 there). -(으)려고 하다 = \"to plan / be about to\".",
+ ex:[["한국 회사에 취직하려고 한국어를 배워요.","I'm learning Korean to get a job at a Korean company."]],
+ drills:[
+  {q:"한국 회사에 ___ 한국어를 배워요.",h:"취직하다",a:["취직하려고"],en:"I'm learning Korean in order to get a job at a Korean company."},
+  {q:"친구에게 ___ 꽃을 샀어요.",h:"주다",a:["주려고"],en:"I bought flowers to give to a friend."},
+  {q:"살을 ___ 매일 운동해요.",h:"빼다",a:["빼려고"],en:"I work out every day to lose weight."},
+  {q:"사진을 ___ 카메라를 가져왔어요.",h:"찍다",a:["찍으려고"],en:"I brought a camera to take photos."}]},
+{id:"eureo",form:"-(으)러 가다/오다",meaning:"go/come (somewhere) to do",
+ notes:"Only with movement verbs after it (가다, 오다, 다니다, 나가다…). Vowel/ㄹ stem + 러 (보러, 놀러), consonant stem + 으러 (먹으러).",
+ ex:[["점심 먹으러 가요.","Let's go eat lunch."]],
+ drills:[
+  {q:"도서관에 책을 ___ 가요.",h:"빌리다",a:["빌리러"],en:"I'm going to the library to borrow books."},
+  {q:"점심을 ___ 식당에 갔어요.",h:"먹다",a:["먹으러"],en:"I went to a restaurant to eat lunch."},
+  {q:"친구가 우리 집에 ___ 왔어요.",h:"놀다",a:["놀러"],en:"A friend came over to hang out."},
+  {q:"돈을 ___ 은행에 가야 해요.",h:"찾다 (withdraw)",a:["찾으러"],en:"I need to go to the bank to withdraw money."}]},
+{id:"aya",form:"-아/어야 하다 / 되다",meaning:"must, have to",
+ notes:"Stem + 아/어야 + 하다 or 되다 (same meaning; 되다 is very common in speech): 가야 해요, 먹어야 돼요, 해야 해요. Negative \"don't have to\" is -지 않아도 되다 / 안 -아/어도 되다.",
+ ex:[["내일 일찍 일어나야 해요.","I have to get up early tomorrow."]],
+ drills:[
+  {q:"내일 일찍 ___ 해요.",h:"일어나다",a:["일어나야"],en:"I have to get up early tomorrow."},
+  {q:"비자를 ___ 돼요.",h:"연장하다",a:["연장해야"],en:"I have to extend my visa."},
+  {q:"이 서류는 오늘까지 ___ 해요.",h:"내다",a:["내야"],en:"This document has to be submitted by today."},
+  {q:"약을 하루에 세 번 ___ 돼요.",h:"먹다",a:["먹어야"],en:"You have to take the medicine three times a day."}]},
+{id:"ado",form:"-아/어도 되다",meaning:"may, it's okay to (permission)",
+ notes:"Stem + 아/어도 되다: 찍어도 돼요?, 앉아도 돼요. Also -아/어도 \"even if\" on its own: 비가 와도 갈 거예요.",
+ ex:[["여기 앉아도 돼요?","May I sit here?"]],
+ drills:[
+  {q:"여기서 사진을 ___ 돼요?",h:"찍다",a:["찍어도"],en:"Can I take photos here?"},
+  {q:"창문을 ___ 돼요?",h:"열다",a:["열어도"],en:"May I open the window?"},
+  {q:"내일은 안 ___ 돼요.",h:"오다",a:["와도"],en:"You don't have to come tomorrow."},
+  {q:"이거 ___ 돼요?",h:"먹다",a:["먹어도"],en:"Can I eat this?"}]},
+{id:"myeonandoe",form:"-(으)면 안 되다",meaning:"must not, not allowed",
+ notes:"-(으)면 + 안 되다: 피우면 안 돼요, 찍으면 안 돼요. Literally \"if you do X, it's not okay\".",
+ ex:[["여기서 담배를 피우면 안 돼요.","You can't smoke here."]],
+ drills:[
+  {q:"여기서 담배를 ___ 안 돼요.",h:"피우다",a:["피우면"],en:"You can't smoke here."},
+  {q:"수업 시간에 ___ 안 돼요.",h:"떠들다",a:["떠들면"],en:"You must not chat loudly during class."},
+  {q:"박물관에서 사진을 ___ 안 돼요.",h:"찍다",a:["찍으면"],en:"You can't take photos in the museum."},
+  {q:"이 물은 ___ 안 돼요.",h:"마시다",a:["마시면"],en:"You shouldn't drink this water."}]},
+{id:"sudo",form:"-(으)ㄹ 수 있다/없다",meaning:"can / cannot",
+ notes:"Vowel stem + ㄹ 수 있다 (갈 수 있어요); consonant stem + 을 수 있다 (읽을 수 있어요); ㄹ-stem stays as is (만들 수 있어요, 풀 수 없어요). Also 못 + verb for \"can't\".",
+ ex:[["저는 한국 음식을 만들 수 있어요.","I can make Korean food."]],
+ drills:[
+  {q:"저는 한국 음식을 ___ 있어요.",h:"만들다",a:["만들 수"],en:"I can make Korean food."},
+  {q:"오늘은 바빠서 ___ 없어요.",h:"가다",a:["갈 수"],en:"I'm busy today, so I can't go."},
+  {q:"이 문제는 혼자 ___ 없어요.",h:"풀다",a:["풀 수"],en:"I can't solve this problem on my own."},
+  {q:"한자를 조금 ___ 있어요.",h:"읽다",a:["읽을 수"],en:"I can read a few Chinese characters."}]},
+{id:"gosipda",form:"-고 싶다 / 싶어하다",meaning:"want to",
+ notes:"Stem + 고 싶다 for I/you. For a third person, use -고 싶어하다: 동생은 의사가 되고 싶어해요.",
+ ex:[["한국에 다시 가고 싶어요.","I want to go to Korea again."]],
+ drills:[
+  {q:"한국에 다시 ___ 싶어요.",h:"가다",a:["가고"],en:"I want to go to Korea again."},
+  {q:"뭐 ___ 싶어요?",h:"먹다",a:["먹고"],en:"What do you want to eat?"},
+  {q:"동생은 의사가 ___ 싶어해요.",h:"되다",a:["되고"],en:"My younger sibling wants to become a doctor."},
+  {q:"오늘은 집에서 ___ 싶어요.",h:"쉬다",a:["쉬고"],en:"I want to rest at home today."}]},
+{id:"aboda",form:"-아/어 보다",meaning:"try doing; have done (experience)",
+ notes:"Stem + 아/어 보다: 입어 보세요 (try it on), 먹어 봤어요 (I've tried eating it). ㄷ-irregular: 듣다 → 들어 보다. 가다 → 가 보다.",
+ ex:[["이 옷 한번 입어 보세요.","Try these clothes on."]],
+ drills:[
+  {q:"이 옷 한번 ___ 보세요.",h:"입다",a:["입어"],en:"Try these clothes on."},
+  {q:"김치찌개를 ___ 봤어요?",h:"먹다",a:["먹어"],en:"Have you tried kimchi stew?"},
+  {q:"제주도에 ___ 봤어요?",h:"가다",a:["가"],en:"Have you been to Jeju Island?"},
+  {q:"이 노래 한번 ___ 보세요. 좋아요.",h:"듣다",a:["들어"],en:"Give this song a listen. It's good."}]},
+{id:"jeogi",form:"-(으)ㄴ 적이 있다/없다",meaning:"have (never) done before",
+ notes:"Past modifier -(으)ㄴ + 적이 있다/없다: 간 적이 있어요, 먹은 적이 없어요. Very often combined with -아/어 보다: 가 본 적이 있어요.",
+ ex:[["한복을 입어 본 적이 있어요?","Have you ever worn a hanbok?"]],
+ drills:[
+  {q:"저는 제주도에 가 ___ 적이 있어요.",h:"보다",a:["본"],en:"I've been to Jeju Island."},
+  {q:"한복을 입어 ___ 적이 있어요?",h:"보다",a:["본"],en:"Have you ever worn a hanbok?"},
+  {q:"그 사람을 ___ 적이 없어요.",h:"만나다",a:["만난"],en:"I've never met that person."},
+  {q:"그 책을 ___ 적이 있어요.",h:"읽다",a:["읽은"],en:"I've read that book before."}]},
+{id:"gijeone",form:"-기 전에",meaning:"before doing",
+ notes:"Stem + 기 전에, no tense on the verb: 자기 전에, 먹기 전에. Noun: N 전에 (식사 전에).",
+ ex:[["자기 전에 이를 닦으세요.","Brush your teeth before going to bed."]],
+ drills:[
+  {q:"___ 이를 닦으세요.",h:"자다 + before",a:["자기 전에"],en:"Brush your teeth before going to bed."},
+  {q:"밥을 ___ 손을 씻어요.",h:"먹다 + before",a:["먹기 전에"],en:"I wash my hands before eating."},
+  {q:"한국에 ___ 한국어를 조금 배웠어요.",h:"오다 + before",a:["오기 전에"],en:"I learned a little Korean before coming to Korea."},
+  {q:"회의를 ___ 자료를 확인하세요.",h:"시작하다 + before",a:["시작하기 전에"],en:"Check the materials before starting the meeting."}]},
+{id:"eunhue",form:"-(으)ㄴ 후에 / 다음에",meaning:"after doing",
+ notes:"Past modifier -(으)ㄴ + 후에 (or 다음에, 뒤에): 끝난 후에, 먹은 다음에. ㄹ-stem: 만들다 → 만든 후에. Noun: N 후에 (수업 후에).",
+ ex:[["수업이 끝난 후에 같이 밥 먹어요.","Let's eat together after class ends."]],
+ drills:[
+  {q:"수업이 ___ 같이 밥 먹어요.",h:"끝나다 + after",a:["끝난 후에","끝난 다음에","끝난 뒤에"],en:"Let's eat together after class ends."},
+  {q:"밥을 ___ 산책했어요.",h:"먹다 + after",a:["먹은 후에","먹은 다음에","먹은 뒤에"],en:"I went for a walk after eating."},
+  {q:"대학교를 ___ 회사에 들어갔어요.",h:"졸업하다 + after",a:["졸업한 후에","졸업한 다음에","졸업한 뒤에"],en:"I joined a company after graduating from university."},
+  {q:"숙제를 ___ 게임해도 돼.",h:"하다 + after",a:["한 후에","한 다음에","한 뒤에"],en:"You can play games after doing your homework."}]},
+{id:"neundongan",form:"-는 동안",meaning:"while, during the time that",
+ notes:"Action verb stem + 는 동안: 보는 동안, 기다리는 동안. ㄹ-stem drops ㄹ: 살다 → 사는 동안. Noun: N 동안 (방학 동안).",
+ ex:[["버스를 기다리는 동안 책을 읽었어요.","I read a book while waiting for the bus."]],
+ drills:[
+  {q:"버스를 ___ 동안 책을 읽었어요.",h:"기다리다",a:["기다리는"],en:"I read a book while waiting for the bus."},
+  {q:"한국에 ___ 동안 친구를 많이 사귀었어요.",h:"살다",a:["사는"],en:"I made many friends while living in Korea."},
+  {q:"영화를 ___ 동안 전화가 왔어요.",h:"보다",a:["보는"],en:"I got a call while watching a movie."},
+  {q:"제가 장을 ___ 동안 아이 좀 봐 주세요.",h:"보다",a:["보는"],en:"Please watch the kid while I do the grocery shopping."}]},
+{id:"eulttae",form:"-(으)ㄹ 때",meaning:"when, at the time when",
+ notes:"Vowel/ㄹ stem + ㄹ 때 (갈 때, 살 때); consonant stem + 을 때 (있을 때). Past: -았/었을 때 (왔을 때). Works with adjectives: 어릴 때, 바쁠 때.",
+ ex:[["어릴 때 부산에 살았어요.","I lived in Busan when I was young."]],
+ drills:[
+  {q:"___ 때 부산에 살았어요.",h:"어리다",a:["어릴"],en:"I lived in Busan when I was little."},
+  {q:"한국어를 ___ 때 이 사전을 써요.",h:"공부하다",a:["공부할"],en:"I use this dictionary when I study Korean."},
+  {q:"시간이 ___ 때 연락하세요.",h:"있다",a:["있을"],en:"Contact me when you have time."},
+  {q:"기분이 ___ 때 음악을 들어요.",h:"나쁘다",a:["나쁠"],en:"I listen to music when I'm in a bad mood."}]},
+{id:"eulgeotgatda",form:"-(으)ㄹ 것 같다",meaning:"I think it will…, it seems like it'll… (guess)",
+ notes:"Future/conjecture modifier -(으)ㄹ + 것 같다: 올 것 같아요, 늦을 것 같아요. Very common softener for opinions: 좋을 것 같아요 (\"I think that'd be good\").",
+ ex:[["비가 올 것 같아요.","It looks like it's going to rain."]],
+ drills:[
+  {q:"하늘을 보니까 비가 ___ 같아요.",h:"오다",a:["올 것"],en:"Looking at the sky, I think it's going to rain."},
+  {q:"그 영화 ___ 같아요.",h:"재미있다",a:["재미있을 것"],en:"I think that movie will be fun."},
+  {q:"차가 막혀서 좀 ___ 같아요.",h:"늦다",a:["늦을 것"],en:"Traffic's bad, so I think I'll be a bit late."},
+  {q:"이 색깔이 잘 ___ 같아요.",h:"어울리다",a:["어울릴 것"],en:"I think this color will suit you."}]},
+{id:"neungeotgatda",form:"-는/(으)ㄴ 것 같다",meaning:"it seems that (based on what I see now / saw)",
+ notes:"Present, action verbs and 있다/없다: -는 것 같다 (오는 것 같아요, 맛있는 것 같아요). Present, adjectives: -(으)ㄴ 것 같다 (바쁜 것 같아요). Past, action verbs: -(으)ㄴ 것 같다 (잃어버린 것 같아요).",
+ ex:[["밖에 비가 오는 것 같아요.","It seems to be raining outside."]],
+ drills:[
+  {q:"밖에 비가 ___ 같아요.",h:"오다, now",a:["오는 것"],en:"It seems to be raining outside."},
+  {q:"민수 씨가 요즘 많이 ___ 같아요.",h:"바쁘다",a:["바쁜 것"],en:"Minsu seems really busy these days."},
+  {q:"길을 ___ 같아요.",h:"잃다, past",a:["잃은 것"],en:"I think we got lost."},
+  {q:"이 식당 음식이 ___ 같아요.",h:"맛있다",a:["맛있는 것"],en:"The food at this restaurant seems good."}]},
+{id:"girohada",form:"-기로 하다",meaning:"decide to; agree/plan to",
+ notes:"Stem + 기로 하다, usually in past: 하기로 했어요 (\"I decided to / we agreed to\"). Also -기로 결정하다, -기로 약속하다.",
+ ex:[["주말에 친구를 만나기로 했어요.","I made plans to meet a friend this weekend."]],
+ drills:[
+  {q:"우리 내일 같이 ___ 했어요.",h:"등산하다",a:["등산하기로"],en:"We agreed to go hiking together tomorrow."},
+  {q:"올해부터 담배를 ___ 했어요.",h:"끊다",a:["끊기로"],en:"I decided to quit smoking starting this year."},
+  {q:"주말에 친구를 ___ 했어요.",h:"만나다",a:["만나기로"],en:"I made plans to meet a friend this weekend."},
+  {q:"매일 한국어를 30분씩 ___ 했어요.",h:"공부하다",a:["공부하기로"],en:"I decided to study Korean for 30 minutes every day."}]},
+{id:"gedoeda",form:"-게 되다",meaning:"end up doing, come to (change not fully by choice)",
+ notes:"Stem + 게 되다, usually past: 살게 됐어요, 먹게 됐어요. Describes how a situation turned out or changed — often humbler than saying \"I decided\".",
+ ex:[["회사 때문에 독일에 살게 됐어요.","I ended up living in Germany because of work."]],
+ drills:[
+  {q:"회사 때문에 독일에 ___ 됐어요.",h:"살다",a:["살게"],en:"I ended up living in Germany because of work."},
+  {q:"처음에는 김치를 못 먹었는데 지금은 잘 ___ 됐어요.",h:"먹다",a:["먹게"],en:"At first I couldn't eat kimchi, but now I eat it fine."},
+  {q:"한국 드라마를 보고 한국어에 관심을 ___ 됐어요.",h:"가지다",a:["가지게"],en:"Watching Korean dramas got me interested in Korean."},
+  {q:"다음 달부터 새 프로젝트를 ___ 됐어요.",h:"맡다",a:["맡게"],en:"I'll be taking on a new project from next month."}]},
+{id:"ajida",form:"-아/어지다",meaning:"become, get (change of state with adjectives)",
+ notes:"Adjective stem + 아/어지다: 따뜻해지다, 좋아지다, 추워지다 (ㅂ-irregular), 예뻐지다. Often with 점점 or 많이.",
+ ex:[["날씨가 많이 따뜻해졌어요.","The weather has gotten much warmer."]],
+ drills:[
+  {q:"날씨가 많이 ___.",h:"따뜻하다 → became (polite past)",a:["따뜻해졌어요"],en:"The weather has gotten much warmer."},
+  {q:"한국어 실력이 많이 ___.",h:"좋다 → became (polite past)",a:["좋아졌어요"],en:"Your Korean has gotten much better."},
+  {q:"요즘 물가가 많이 ___.",h:"비싸다 → became (polite past)",a:["비싸졌어요"],en:"Prices have gotten much more expensive lately."},
+  {q:"날이 점점 ___ 있어요.",h:"춥다 → become + -고",a:["추워지고"],en:"It's getting colder and colder."}]},
+{id:"eulgeyo",form:"-(으)ㄹ게요",meaning:"I will (promise / announcing my action to the listener)",
+ notes:"First person only, responsive to the listener: 전화할게요, 먹을게요, 도와줄게요. ㄹ-stem: 만들게요. Compare -(으)ㄹ 거예요, which is a neutral future/plan.",
+ ex:[["내일 다시 전화할게요.","I'll call again tomorrow."]],
+ drills:[
+  {q:"내일 다시 ___.",h:"전화하다",a:["전화할게요"],en:"I'll call again tomorrow."},
+  {q:"그건 제가 ___.",h:"도와주다",a:["도와줄게요"],en:"I'll help you with that."},
+  {q:"늦지 않게 ___.",h:"오다",a:["올게요"],en:"I'll come on time (I won't be late)."},
+  {q:"오늘 커피는 제가 ___.",h:"사다",a:["살게요"],en:"I'll buy the coffee today."}]},
+{id:"eulkkayo",form:"-(으)ㄹ까요?",meaning:"shall we/I…?; do you think…?",
+ notes:"Suggestion or offer (먹을까요? shall we eat?, 닫을까요? shall I close it?) or asking for an opinion (좋을까요? do you think it'll be good?).",
+ ex:[["같이 점심 먹을까요?","Shall we have lunch together?"]],
+ drills:[
+  {q:"같이 점심 ___?",h:"먹다",a:["먹을까요"],en:"Shall we have lunch together?"},
+  {q:"추운데 창문을 ___?",h:"닫다",a:["닫을까요"],en:"It's cold — shall I close the window?"},
+  {q:"내일 날씨가 ___?",h:"좋다",a:["좋을까요"],en:"Do you think the weather will be nice tomorrow?"},
+  {q:"우리 어디에서 ___?",h:"만나다",a:["만날까요"],en:"Where shall we meet?"}]},
+{id:"pyeonida",form:"-는/(으)ㄴ 편이다",meaning:"tend to, be on the … side",
+ notes:"Action verbs and 있다/없다: -는 편이다 (먹는 편이에요). Adjectives: -(으)ㄴ 편이다 (싼 편이에요, 많은 편이에요). Softens statements about yourself or others.",
+ ex:[["저는 매운 음식을 잘 먹는 편이에요.","I'm pretty good with spicy food."]],
+ drills:[
+  {q:"저는 매운 음식을 잘 ___ 편이에요.",h:"먹다",a:["먹는"],en:"I tend to handle spicy food well."},
+  {q:"이 동네는 집값이 ___ 편이에요.",h:"싸다",a:["싼"],en:"Housing in this neighborhood is on the cheap side."},
+  {q:"저는 키가 ___ 편이에요.",h:"크다",a:["큰"],en:"I'm on the tall side."},
+  {q:"동생은 말이 ___ 편이에요.",h:"많다",a:["많은"],en:"My younger sibling tends to talk a lot."}]},
+{id:"janayo",form:"-잖아요",meaning:"you know…, as you know (shared knowledge)",
+ notes:"Stem + 잖아요; past -았/었잖아요; noun N(이)잖아요. Reminds the listener of something they already know. Can sound a bit pushy with superiors.",
+ ex:[["제가 어제 말했잖아요!","I told you yesterday!"]],
+ drills:[
+  {q:"제가 어제 ___!",h:"말하다, past",a:["말했잖아요"],en:"I told you yesterday!"},
+  {q:"은행은 문을 닫았을 거예요. 오늘은 ___.",h:"일요일이다",a:["일요일이잖아요"],en:"The bank will be closed. It's Sunday, you know."},
+  {q:"밖에 비가 ___. 우산 가져가세요.",h:"오다",a:["오잖아요"],en:"It's raining outside, you know. Take an umbrella."},
+  {q:"그 사람은 원래 ___.",h:"바쁘다",a:["바쁘잖아요"],en:"You know that person is always busy."}]},
+{id:"deoragoyo",form:"-더라고요",meaning:"I noticed / found that… (reporting what you saw or experienced)",
+ notes:"Stem + 더라고요 (casual speech often 더라구요). Used for things you personally witnessed or experienced, told to someone who didn't. Not for your own feelings in the moment.",
+ ex:[["그 식당에 가 봤는데 정말 맛있더라고요.","I went to that restaurant and it was really good."]],
+ drills:[
+  {q:"그 식당에 가 봤는데 정말 ___.",h:"맛있다",a:["맛있더라고요","맛있더라구요"],en:"I tried that restaurant, and it was really good."},
+  {q:"부산에 갔는데 사람이 정말 ___.",h:"많다",a:["많더라고요","많더라구요"],en:"I went to Busan, and there were so many people."},
+  {q:"민수 씨한테 전화했는데 많이 ___.",h:"바쁘다",a:["바쁘더라고요","바쁘더라구요"],en:"I called Minsu, and he was really busy."},
+  {q:"한국어 시험이 생각보다 ___.",h:"어렵다",a:["어렵더라고요","어렵더라구요"],en:"The Korean exam was harder than I expected."}]},
+{id:"daga",form:"-다가",meaning:"while doing (then something else happened / switched)",
+ notes:"Action stem + 다가: 가다가, 걷다가, 공부하다가. Action is interrupted or another event happens during it. Same subject in both clauses.",
+ ex:[["학교에 가다가 친구를 만났어요.","I ran into a friend on the way to school."]],
+ drills:[
+  {q:"학교에 ___ 친구를 만났어요.",h:"가다",a:["가다가"],en:"I ran into a friend on my way to school."},
+  {q:"___ 잠이 들었어요.",h:"공부하다",a:["공부하다가"],en:"I fell asleep while studying."},
+  {q:"텔레비전을 ___ 잤어요.",h:"보다",a:["보다가"],en:"I fell asleep watching TV."},
+  {q:"길을 ___ 넘어졌어요.",h:"걷다",a:["걷다가"],en:"I tripped while walking down the street."}]},
+{id:"neurago",form:"-느라(고)",meaning:"because I was busy doing (so couldn't…)",
+ notes:"Action stem + 느라고 (or 느라): 하느라고, 준비하느라고. Usually explains a negative result or excuse (못 잤어요, 바빴어요). Same subject; no tense on the first verb.",
+ ex:[["숙제를 하느라고 못 잤어요.","I couldn't sleep because I was doing homework."]],
+ drills:[
+  {q:"숙제를 ___ 못 잤어요.",h:"하다",a:["하느라고","하느라"],en:"I couldn't sleep because I was doing homework."},
+  {q:"친구랑 ___ 전화를 못 받았어요.",h:"이야기하다",a:["이야기하느라고","이야기하느라","얘기하느라고","얘기하느라"],en:"I missed your call because I was talking with a friend."},
+  {q:"이사를 ___ 정신이 없어요.",h:"준비하다",a:["준비하느라고","준비하느라"],en:"I'm frazzled from getting ready to move."},
+  {q:"게임을 ___ 시간 가는 줄 몰랐어요.",h:"하다",a:["하느라고","하느라"],en:"I was so into the game I lost track of time."}]},
+{id:"geona",form:"-거나",meaning:"or (between actions/states)",
+ notes:"Stem + 거나: 읽거나, 마시거나. For nouns use (이)나: 커피나 차.",
+ ex:[["주말에는 책을 읽거나 영화를 봐요.","On weekends I read or watch movies."]],
+ drills:[
+  {q:"주말에는 책을 ___ 영화를 봐요.",h:"읽다",a:["읽거나"],en:"On weekends I read books or watch movies."},
+  {q:"저한테 ___ 문자 보내세요.",h:"전화하다",a:["전화하거나"],en:"Call or text me."},
+  {q:"아침에는 커피를 ___ 차를 마셔요.",h:"마시다",a:["마시거나"],en:"In the morning I drink coffee or tea."},
+  {q:"시간 있을 때 운동을 ___ 산책을 해요.",h:"하다",a:["하거나"],en:"When I have time, I exercise or go for a walk."}]},
+{id:"eeseo",form:"Particles 에 vs 에서",meaning:"에 = destination / location of existence / time; 에서 = place where an action happens; from",
+ notes:"에: 가다/오다 destinations (부산에 가요), with 있다/없다 (방에 있어요), times (3시에). 에서: where an activity takes place (회사에서 일해요), and \"from\" a place (서울에서 왔어요).",
+ ex:[["저는 회사에서 일해요.","I work at a company."],["내일 부산에 가요.","I'm going to Busan tomorrow."]],
+ drills:[
+  {q:"저는 사무실___ 일해요.",h:"에 / 에서",a:["에서"],en:"I work at an office."},
+  {q:"내일 부산___ 가요.",h:"에 / 에서",a:["에"],en:"I'm going to Busan tomorrow."},
+  {q:"도서관___ 공부했어요.",h:"에 / 에서",a:["에서"],en:"I studied at the library."},
+  {q:"방___ 고양이가 있어요.",h:"에 / 에서",a:["에"],en:"There's a cat in the room."}]},
+{id:"euro",form:"Particle (으)로",meaning:"by means of; toward (direction); as",
+ notes:"After a vowel or ㄹ: 로 (지하철로, 연필로, 서울로). After other consonants: 으로 (왼쪽으로, 볼펜으로).",
+ ex:[["지하철로 학교에 가요.","I go to school by subway."]],
+ drills:[
+  {q:"지하철___ 출근해요.",h:"로 / 으로",a:["로"],en:"I commute by subway."},
+  {q:"다음 사거리에서 왼쪽___ 가세요.",h:"로 / 으로",a:["으로"],en:"Go left at the next intersection."},
+  {q:"연필___ 쓰세요.",h:"로 / 으로",a:["로"],en:"Write with a pencil."},
+  {q:"볼펜___ 써 주세요.",h:"로 / 으로",a:["으로"],en:"Please write with a ballpoint pen."}]}
+];
+
+// Additional grammar points
+GRAMMAR.push(
+{id:"goitda",form:"-고 있다",meaning:"be doing (progressive)",
+ notes:"Action stem + 고 있다: 먹고 있어요, 배우고 있어요. Covers \"right now\" and \"these days\". Honorific: -고 계시다.",
+ ex:[["지금 밥을 먹고 있어요.","I'm eating right now."],["요즘 한국어를 배우고 있어요.","I'm learning Korean these days."]],
+ drills:[
+  {q:"지금 밥을 ___ 있어요.",h:"먹다",a:["먹고"],en:"I'm eating right now."},
+  {q:"동생은 지금 ___ 있어요.",h:"자다",a:["자고"],en:"My younger sibling is sleeping right now."},
+  {q:"요즘 중국어를 ___ 있어요.",h:"배우다",a:["배우고"],en:"I'm learning Chinese these days."},
+  {q:"밖에 비가 ___ 있어요.",h:"오다",a:["오고"],en:"It's raining outside."}]},
+{id:"eulgeoyeyo",form:"-(으)ㄹ 거예요",meaning:"will, going to (future / plan / prediction)",
+ notes:"Vowel/ㄹ stem + ㄹ 거예요 (갈 거예요, 살 거예요); consonant stem + 을 거예요 (먹을 거예요). For a guess about someone else it means \"probably\": 아마 바쁠 거예요.",
+ ex:[["주말에 집에서 쉴 거예요.","I'm going to rest at home this weekend."]],
+ drills:[
+  {q:"내일 친구를 ___.",h:"만나다",a:["만날 거예요"],en:"I'm going to meet a friend tomorrow."},
+  {q:"주말에는 집에서 ___.",h:"쉬다",a:["쉴 거예요"],en:"I'm going to rest at home this weekend."},
+  {q:"하늘이 흐려요. 아마 비가 ___.",h:"오다",a:["올 거예요"],en:"The sky is overcast. It'll probably rain."},
+  {q:"다음 달에 ___.",h:"이사하다",a:["이사할 거예요"],en:"I'm going to move next month."}]},
+{id:"ajuda",form:"-아/어 주다",meaning:"do something for someone",
+ notes:"Stem + 아/어 주다: 열어 주세요 (please open), 도와줄게요 (I'll help you). Polite request: -아/어 주시겠어요? Toward superiors: -아/어 드리다 (제가 도와 드릴게요).",
+ ex:[["사진 좀 찍어 주시겠어요?","Could you take a photo for me?"]],
+ drills:[
+  {q:"문 좀 ___ 주세요.",h:"열다",a:["열어"],en:"Please open the door."},
+  {q:"사진 좀 ___ 주시겠어요?",h:"찍다",a:["찍어"],en:"Could you take a photo for me?"},
+  {q:"친구가 길을 ___ 줬어요.",h:"가르치다",a:["가르쳐"],en:"A friend showed me the way."},
+  {q:"무거우면 제가 ___ 줄게요.",h:"돕다",a:["도와"],en:"If it's heavy, I'll help you."}]},
+{id:"jimalda",form:"-지 말다",meaning:"don't (negative command / suggestion)",
+ notes:"Stem + 지 마세요 (please don't), 지 마 (casual), 지 맙시다 / 지 말자 (let's not). Only for commands and suggestions — for statements use 안 or -지 않다.",
+ ex:[["너무 걱정하지 마세요.","Don't worry too much."]],
+ drills:[
+  {q:"여기서 사진을 ___.",h:"찍다 → please don't",a:["찍지 마세요","찍지 마십시오"],en:"Please don't take photos here."},
+  {q:"너무 ___.",h:"걱정하다 → please don't",a:["걱정하지 마세요"],en:"Don't worry too much."},
+  {q:"내일은 늦게 ___.",h:"오다 → please don't",a:["오지 마세요"],en:"Please don't come late tomorrow."},
+  {q:"우리 오늘은 술 ___.",h:"마시다 → let's not",a:["마시지 맙시다","마시지 말자","마시지 말아요"],en:"Let's not drink today."}]},
+{id:"modifiers",form:"-(으)ㄴ / -는 / -(으)ㄹ + noun",meaning:"modifiers: the movie (that) I saw / am watching / will watch",
+ notes:"Action verbs: past -(으)ㄴ (본 영화), present -는 (보는 영화), future -(으)ㄹ (볼 영화). Adjectives: -(으)ㄴ (큰 집, 좋은 사람). 있다/없다 take -는 (재미있는 책). ㄹ-stem drops ㄹ before ㄴ: 살다 → 사는, 산.",
+ ex:[["어제 본 영화가 재미있었어요.","The movie I saw yesterday was fun."],["지금 듣는 노래가 뭐예요?","What's the song you're listening to now?"]],
+ drills:[
+  {q:"어제 ___ 영화가 재미있었어요.",h:"보다, past",a:["본"],en:"The movie I saw yesterday was fun."},
+  {q:"지금 ___ 노래가 뭐예요?",h:"듣다, present",a:["듣는"],en:"What's the song you're listening to now?"},
+  {q:"내일 ___ 옷을 골랐어요.",h:"입다, future",a:["입을"],en:"I picked out the clothes I'll wear tomorrow."},
+  {q:"저기 키가 ___ 사람이 누구예요?",h:"크다",a:["큰"],en:"Who's that tall person over there?"}]},
+{id:"honorific",form:"-(으)시- (honorific)",meaning:"showing respect to the subject (elders, superiors)",
+ notes:"Vowel stem + 시, consonant stem + 으시: 가세요, 읽으세요; past 가셨어요. ㄹ-stem drops ㄹ: 살다 → 사세요. Special verbs: 먹다/마시다 → 드시다, 자다 → 주무시다, 있다 → 계시다, 말하다 → 말씀하시다. Subject particle 께서.",
+ ex:[["할머니께서 신문을 읽으세요.","Grandma is reading the newspaper."]],
+ drills:[
+  {q:"할머니께서 신문을 ___.",h:"읽다, honorific",a:["읽으세요","읽으십니다"],en:"Grandma is reading the newspaper."},
+  {q:"선생님은 어디에 ___?",h:"살다, honorific",a:["사세요","사십니까"],en:"Where do you live, teacher?"},
+  {q:"아버지께서 어제 ___.",h:"오다, honorific past",a:["오셨어요","오셨습니다"],en:"My father came yesterday."},
+  {q:"할아버지께서 지금 ___ 계세요.",h:"자다 (special honorific verb)",a:["주무시고"],en:"Grandpa is sleeping right now."}]},
+{id:"neyo",form:"-네요",meaning:"oh, … (surprise / noticing something now)",
+ notes:"Stem + 네요: 좋네요, 잘하네요; noun N(이)네요. ㄹ-stem drops ㄹ: 멀다 → 머네요. Reacts to something you just noticed.",
+ ex:[["와, 한국어를 정말 잘하시네요!","Wow, you speak Korean really well!"]],
+ drills:[
+  {q:"오늘 날씨가 정말 ___.",h:"좋다",a:["좋네요"],en:"Oh, the weather's really nice today."},
+  {q:"와, 한국어를 정말 잘 ___!",h:"하다",a:["하네요","하시네요"],en:"Wow, you speak Korean really well!"},
+  {q:"벌써 ___.",h:"12시이다",a:["12시네요","12시이네요","열두시네요"],en:"Oh, it's already 12."},
+  {q:"오늘은 길이 많이 ___.",h:"막히다",a:["막히네요"],en:"Wow, traffic is really bad today."}]},
+{id:"jiyo",form:"-지요 (-죠)",meaning:"…, right? (seeking agreement / softly stating)",
+ notes:"Stem + 지요, usually shortened to 죠: 있죠?, 맛있죠? Noun: N(이)죠. Also used for a soft statement: 그렇죠.",
+ ex:[["이거 정말 맛있죠?","This is really good, isn't it?"]],
+ drills:[
+  {q:"내일 회의 ___?",h:"있다",a:["있죠","있지요"],en:"There's a meeting tomorrow, right?"},
+  {q:"민수 씨는 한국 ___?",h:"사람이다",a:["사람이죠","사람이지요"],en:"Minsu is Korean, right?"},
+  {q:"이거 정말 ___?",h:"맛있다",a:["맛있죠","맛있지요"],en:"This is really good, isn't it?"},
+  {q:"오늘 날씨가 많이 ___?",h:"춥다",a:["춥죠","춥지요"],en:"It's really cold today, isn't it?"}]},
+{id:"compare",form:"보다 / 처럼 / 만큼",meaning:"than / like / as … as",
+ notes:"N보다 (더) = more than N: 형보다 커요. N처럼 = like N (manner/similarity): 아이처럼 웃어요. N만큼 = as much as N: 저만큼 커요.",
+ ex:[["오늘은 어제보다 더 추워요.","Today is colder than yesterday."]],
+ drills:[
+  {q:"제가 형___ 키가 더 커요.",h:"보다 / 처럼 / 만큼",a:["보다"],en:"I'm taller than my older brother."},
+  {q:"그 사람은 아이___ 웃어요.",h:"보다 / 처럼 / 만큼",a:["처럼"],en:"That person laughs like a child."},
+  {q:"동생도 저___ 키가 커요.",h:"보다 / 처럼 / 만큼",a:["만큼"],en:"My younger sibling is as tall as me."},
+  {q:"오늘은 어제___ 더 추워요.",h:"보다 / 처럼 / 만큼",a:["보다"],en:"Today is colder than yesterday."}]},
+{id:"doman",form:"도 / 만 / 밖에",meaning:"also / only / nothing but (밖에 + negative)",
+ notes:"도 = also, too. 만 = only (neutral). 밖에 = only, with a negative verb and a sense of \"not enough\": 천 원밖에 없어요.",
+ ex:[["시간이 10분밖에 안 남았어요.","There are only 10 minutes left."]],
+ drills:[
+  {q:"저는 커피___ 마셔요. 차는 안 마셔요.",h:"도 / 만 / 밖에",a:["만"],en:"I only drink coffee. I don't drink tea."},
+  {q:"지갑에 돈이 천 원___ 없어요.",h:"도 / 만 / 밖에",a:["밖에"],en:"I only have 1,000 won in my wallet."},
+  {q:"저___ 가고 싶어요.",h:"도 / 만 / 밖에",a:["도"],en:"I want to go too."},
+  {q:"시간이 10분___ 안 남았어요.",h:"도 / 만 / 밖에",a:["밖에"],en:"There are only 10 minutes left."}]},
+{id:"gonaseo",form:"-고 나서",meaning:"after finishing (doing)",
+ notes:"Action stem + 고 나서: 먹고 나서, 하고 나서. Stresses that the first action is completed before the next. Close to -(으)ㄴ 후에.",
+ ex:[["밥을 먹고 나서 이를 닦아요.","I brush my teeth after eating."]],
+ drills:[
+  {q:"숙제를 ___ 놀아요.",h:"하다 + after finishing",a:["하고 나서","하고 나서야"],en:"I play after finishing my homework."},
+  {q:"밥을 ___ 이를 닦아요.",h:"먹다 + after finishing",a:["먹고 나서"],en:"I brush my teeth after eating."},
+  {q:"영화를 ___ 저녁을 먹었어요.",h:"보다 + after finishing",a:["보고 나서"],en:"We had dinner after watching the movie."},
+  {q:"이 책을 다 ___ 빌려줄게요.",h:"읽다 + after finishing",a:["읽고 나서"],en:"I'll lend you this book after I finish it."}]},
+{id:"jamaja",form:"-자마자",meaning:"as soon as",
+ notes:"Action stem + 자마자, no tense on it: 도착하자마자, 듣자마자.",
+ ex:[["집에 도착하자마자 잤어요.","I went to sleep as soon as I got home."]],
+ drills:[
+  {q:"집에 ___ 잤어요.",h:"도착하다",a:["도착하자마자"],en:"I fell asleep as soon as I got home."},
+  {q:"수업이 ___ 밖으로 나갔어요.",h:"끝나다",a:["끝나자마자"],en:"I went outside as soon as class ended."},
+  {q:"그 소식을 ___ 전화했어요.",h:"듣다",a:["듣자마자"],en:"I called as soon as I heard the news."},
+  {q:"아침에 ___ 커피를 마셔요.",h:"일어나다",a:["일어나자마자"],en:"I drink coffee as soon as I get up."}]},
+{id:"myeonseo",form:"-(으)면서",meaning:"while (doing two things at once)",
+ notes:"Vowel/ㄹ stem + 면서 (마시면서, 살면서); consonant stem + 으면서 (먹으면서). ㄷ-irregular: 듣다 → 들으면서, 걷다 → 걸으면서. Same subject.",
+ ex:[["음악을 들으면서 공부해요.","I study while listening to music."]],
+ drills:[
+  {q:"음악을 ___ 공부해요.",h:"듣다",a:["들으면서"],en:"I study while listening to music."},
+  {q:"밥을 ___ 텔레비전을 봐요.",h:"먹다",a:["먹으면서"],en:"I watch TV while eating."},
+  {q:"공원을 ___ 이야기했어요.",h:"걷다",a:["걸으면서"],en:"We talked while walking in the park."},
+  {q:"커피를 ___ 일해요.",h:"마시다",a:["마시면서"],en:"I work while drinking coffee."}]},
+{id:"eunji",form:"-(으)ㄴ 지 (시간이) 되다",meaning:"it's been (time) since …",
+ notes:"Past modifier -(으)ㄴ + 지 + time + 되다/넘다: 배운 지 2년 됐어요. ㄹ-stem: 살다 → 산 지.",
+ ex:[["한국어를 배운 지 2년 됐어요.","It's been two years since I started learning Korean."]],
+ drills:[
+  {q:"한국어를 ___ 2년 됐어요.",h:"배우다",a:["배운 지"],en:"It's been two years since I started learning Korean."},
+  {q:"서울에 ___ 얼마나 됐어요?",h:"오다",a:["온 지"],en:"How long has it been since you came to Seoul?"},
+  {q:"베를린에 ___ 3년이 넘었어요.",h:"살다",a:["산 지"],en:"I've been living in Berlin for over three years."},
+  {q:"밥을 ___ 한 시간밖에 안 됐어요.",h:"먹다",a:["먹은 지"],en:"It's only been an hour since I ate."}]},
+{id:"gisijak",form:"-기 시작하다",meaning:"start doing",
+ notes:"Stem + 기 시작하다: 오기 시작했어요, 배우기 시작했어요.",
+ ex:[["갑자기 비가 오기 시작했어요.","It suddenly started raining."]],
+ drills:[
+  {q:"갑자기 비가 ___ 시작했어요.",h:"오다",a:["오기"],en:"It suddenly started raining."},
+  {q:"작년부터 중국어를 ___ 시작했어요.",h:"배우다",a:["배우기"],en:"I started learning Chinese last year."},
+  {q:"아이가 갑자기 ___ 시작했어요.",h:"울다",a:["울기"],en:"The child suddenly started crying."},
+  {q:"다음 주부터 새 회사에서 ___ 시작해요.",h:"일하다",a:["일하기"],en:"I start working at a new company next week."}]},
+{id:"aitda",form:"-아/어 있다",meaning:"be in a state (result of an action remains)",
+ notes:"Intransitive/passive stem + 아/어 있다: 열려 있다 (be open), 앉아 있다 (be seated), 걸려 있다 (be hanging). Compare -고 있다 (the action in progress): 앉고 있어요 = in the middle of sitting down.",
+ ex:[["문이 열려 있어요.","The door is open."]],
+ drills:[
+  {q:"문이 ___ 있어요.",h:"열리다",a:["열려"],en:"The door is open."},
+  {q:"민수 씨는 의자에 ___ 있어요.",h:"앉다",a:["앉아"],en:"Minsu is sitting on the chair."},
+  {q:"벽에 그림이 ___ 있어요.",h:"걸리다",a:["걸려"],en:"There's a picture hanging on the wall."},
+  {q:"공원에 꽃이 많이 ___ 있어요.",h:"피다",a:["피어"],en:"Lots of flowers are in bloom in the park."}]},
+{id:"ryeogohada",form:"-(으)려고 하다",meaning:"plan to, intend to; be about to",
+ notes:"Vowel/ㄹ stem + 려고 하다 (가려고 해요, 만들려고 해요); consonant stem + 으려고 하다 (읽으려고 해요). Past -(으)려고 했어요 = \"I was going to (but…)\".",
+ ex:[["내일부터 운동을 시작하려고 해요.","I'm planning to start working out tomorrow."]],
+ drills:[
+  {q:"내일부터 운동을 ___ 해요.",h:"시작하다",a:["시작하려고"],en:"I'm planning to start working out from tomorrow."},
+  {q:"지금 막 ___ 했어요.",h:"나가다",a:["나가려고"],en:"I was just about to leave."},
+  {q:"올해는 책을 많이 ___ 해요.",h:"읽다",a:["읽으려고"],en:"This year I plan to read a lot of books."},
+  {q:"주말에 김치를 ___ 해요.",h:"만들다",a:["만들려고"],en:"I'm planning to make kimchi this weekend."}]},
+{id:"eullaeyo",form:"-(으)ㄹ래요",meaning:"I'll have / I want to; do you want to …? (casual-polite)",
+ notes:"Vowel/ㄹ stem + ㄹ래요 (갈래요, 만들래요); consonant stem + 을래요 (먹을래요). Statement = my choice; question = asking the listener's wish. Not for superiors in formal settings.",
+ ex:[["저는 커피 마실래요.","I'll have coffee."],["같이 갈래요?","Do you want to go together?"]],
+ drills:[
+  {q:"저는 커피 ___.",h:"마시다",a:["마실래요"],en:"I'll have coffee."},
+  {q:"점심에 뭐 ___?",h:"먹다",a:["먹을래요"],en:"What do you want to eat for lunch?"},
+  {q:"주말에 같이 ___?",h:"가다",a:["갈래요"],en:"Want to go together this weekend?"},
+  {q:"오늘은 그냥 집에 ___.",h:"있다",a:["있을래요"],en:"I'll just stay home today."}]},
+{id:"jianhado",form:"-지 않아도 되다",meaning:"don't have to",
+ notes:"Stem + 지 않아도 되다, or the shorter 안 + -아/어도 되다: 가지 않아도 돼요 = 안 가도 돼요.",
+ ex:[["내일은 회사에 가지 않아도 돼요.","I don't have to go to the office tomorrow."]],
+ drills:[
+  {q:"내일은 회사에 ___ 돼요.",h:"가다 → don't have to",a:["가지 않아도","안 가도"],en:"I don't have to go to the office tomorrow."},
+  {q:"오늘은 돈을 ___ 돼요.",h:"내다 → don't have to",a:["내지 않아도","안 내도"],en:"You don't have to pay today."},
+  {q:"너무 ___ 돼요.",h:"걱정하다 → don't have to",a:["걱정하지 않아도","걱정 안 해도","안 걱정해도"],en:"You don't need to worry so much."},
+  {q:"예약은 ___ 돼요.",h:"하다 → don't have to",a:["하지 않아도","안 해도"],en:"You don't need to make a reservation."}]},
+{id:"euljulalda",form:"-(으)ㄹ 줄 알다/모르다",meaning:"know how to / not know how to",
+ notes:"Vowel/ㄹ stem + ㄹ 줄 알다 (할 줄 알아요); consonant stem + 을 줄 (읽을 줄). About skills you've learned (swimming, driving, cooking).",
+ ex:[["운전할 줄 알아요?","Do you know how to drive?"]],
+ drills:[
+  {q:"저는 수영을 ___ 몰라요.",h:"하다",a:["할 줄"],en:"I don't know how to swim."},
+  {q:"운전을 ___ 알아요?",h:"하다",a:["할 줄"],en:"Do you know how to drive?"},
+  {q:"엄마는 김치를 ___ 아세요.",h:"담그다",a:["담글 줄"],en:"My mom knows how to make kimchi."},
+  {q:"피아노를 ___ 몰라요.",h:"치다",a:["칠 줄"],en:"I don't know how to play the piano."}]},
+{id:"aboida",form:"-아/어 보이다",meaning:"look, seem (based on appearance)",
+ notes:"Adjective stem + 아/어 보이다: 피곤해 보여요, 맛있어 보여요, 슬퍼 보여요. For nouns: N처럼 보이다.",
+ ex:[["오늘 좀 피곤해 보여요.","You look a bit tired today."]],
+ drills:[
+  {q:"오늘 좀 ___.",h:"피곤하다 → look (polite present)",a:["피곤해 보여요"],en:"You look a bit tired today."},
+  {q:"이 케이크 정말 ___.",h:"맛있다 → look",a:["맛있어 보여요"],en:"This cake looks really delicious."},
+  {q:"그 옷을 입으니까 ___.",h:"젊다 → look",a:["젊어 보여요"],en:"You look young in those clothes."},
+  {q:"민수 씨 표정이 좀 ___.",h:"슬프다 → look",a:["슬퍼 보여요"],en:"Minsu looks a bit sad."}]},
+{id:"get",form:"-겠-",meaning:"must be, I bet (reaction / supposition)",
+ notes:"Stem + 겠어요: 맛있겠어요 (that must be tasty), 피곤하겠어요 (you must be tired). Also formal intention (제가 하겠습니다) and fixed politeness (알겠습니다, 처음 뵙겠습니다).",
+ ex:[["와, 맛있겠어요!","Wow, that looks delicious!"]],
+ drills:[
+  {q:"와, 이 케이크 ___!",h:"맛있다",a:["맛있겠어요","맛있겠다"],en:"Wow, this cake must be delicious!"},
+  {q:"오늘 열 시간 일했어요? 정말 ___.",h:"피곤하다",a:["피곤하겠어요","피곤하시겠어요"],en:"You worked ten hours today? You must be exhausted."},
+  {q:"내일은 눈이 와서 ___.",h:"춥다",a:["춥겠어요"],en:"It's going to snow tomorrow, so it'll be cold."},
+  {q:"이사도 하고 시험도 있으면 정말 ___.",h:"바쁘다",a:["바쁘겠어요","바쁘시겠어요"],en:"Moving and exams at the same time — you must be really busy."}]},
+{id:"ado2",form:"-아/어도",meaning:"even if, even though",
+ notes:"Stem + 아/어도: 와도, 바빠도, 비싸도. With 아무리 = \"no matter how\": 아무리 운동해도.",
+ ex:[["아무리 바빠도 밥은 꼭 먹어요.","No matter how busy I am, I always eat."]],
+ drills:[
+  {q:"내일 비가 ___ 갈 거예요.",h:"오다",a:["와도"],en:"Even if it rains tomorrow, I'll go."},
+  {q:"아무리 ___ 살이 안 빠져요.",h:"운동하다",a:["운동해도"],en:"No matter how much I exercise, I don't lose weight."},
+  {q:"아무리 ___ 밥은 꼭 먹어요.",h:"바쁘다",a:["바빠도"],en:"No matter how busy I am, I always eat."},
+  {q:"좀 ___ 이 가방을 사고 싶어요.",h:"비싸다",a:["비싸도"],en:"Even if it's a bit pricey, I want to buy this bag."}]},
+{id:"nominal",form:"-는 것 / -기 (verb → noun)",meaning:"doing X (turning a verb into a noun)",
+ notes:"-는 것 (often -는 거, -는 게 = 것이, -는 걸 = 것을) is the general way: 요리하는 걸 좋아해요. -기 is common with 좋다/싫다/쉽다/어렵다 and in set phrases: 배우기 어려워요, 취미는 사진 찍기.",
+ ex:[["저는 요리하는 걸 좋아해요.","I like cooking."]],
+ drills:[
+  {q:"한국어를 ___ 재미있어요.",h:"배우다 + subject",a:["배우는 게","배우는 것이","배우는 거","배우기가"],en:"Learning Korean is fun."},
+  {q:"저는 ___ 좋아해요.",h:"요리하다 + object",a:["요리하는 걸","요리하는 것을","요리하기를","요리하는 거"],en:"I like cooking."},
+  {q:"매일 ___ 쉽지 않아요.",h:"운동하다 + subject",a:["운동하는 게","운동하는 것이","운동하기가","운동하는 거"],en:"Working out every day isn't easy."},
+  {q:"혼자 밥 ___ 싫어요.",h:"먹다 + subject",a:["먹는 게","먹는 것이","먹는 거","먹기"],en:"I don't like eating alone."}]},
+{id:"neunji",form:"-는지 / -(으)ㄴ지 알다·모르다",meaning:"(know / don't know) whether, what, where …",
+ notes:"Embedded questions. Action verbs and 있다/없다: -는지 (사는지, 맛있는지). Adjectives: -(으)ㄴ지 (좋은지). Noun: N인지. Past: -았/었는지. Followed by 알다, 모르다, 궁금하다, 물어보다…",
+ ex:[["그 사람이 어디에 사는지 알아요?","Do you know where that person lives?"]],
+ drills:[
+  {q:"그 사람이 어디에 ___ 알아요?",h:"살다",a:["사는지"],en:"Do you know where that person lives?"},
+  {q:"이게 무슨 ___ 모르겠어요.",h:"뜻이다",a:["뜻인지"],en:"I don't know what this means."},
+  {q:"회의가 몇 시에 ___ 알려 주세요.",h:"시작하다",a:["시작하는지"],en:"Please let me know what time the meeting starts."},
+  {q:"그 식당이 ___ 모르겠어요.",h:"맛있다",a:["맛있는지"],en:"I'm not sure whether that restaurant is good."}]},
+{id:"dago",form:"-다고 하다 (reported statements)",meaning:"(someone) said that …",
+ notes:"Action verbs: -ㄴ/는다고 (간다고, 먹는다고). Adjectives: -다고 (바쁘다고). Nouns: -(이)라고 (학생이라고). Past: -았/었다고. Future: -(으)ㄹ 거라고. Spoken short forms: -대요 / -래요 (바쁘대요, 학생이래요).",
+ ex:[["민수 씨가 내일 바쁘다고 했어요.","Minsu said he's busy tomorrow."]],
+ drills:[
+  {q:"민수 씨가 내일 ___ 했어요.",h:"바쁘다",a:["바쁘다고"],en:"Minsu said he's busy tomorrow."},
+  {q:"친구가 다음 주에 한국에 ___ 했어요.",h:"가다",a:["간다고","갈 거라고"],en:"My friend said they're going to Korea next week."},
+  {q:"뉴스에서 내일 눈이 ___ 했어요.",h:"오다",a:["온다고","올 거라고"],en:"The news said it'll snow tomorrow."},
+  {q:"그 사람이 ___ 했어요.",h:"학생이다",a:["학생이라고"],en:"That person said they're a student."}]},
+{id:"nyago",form:"-냐고 하다 / 묻다 (reported questions)",meaning:"(someone) asked whether / what …",
+ notes:"Stem + 냐고 (spoken; written also -(느)냐고 / -(으)냐고): 사냐고, 먹었냐고. Noun: N(이)냐고. Usually with 물어보다 / 묻다. Short form: -냬요.",
+ ex:[["친구가 어디에 사냐고 물어봤어요.","My friend asked where I live."]],
+ drills:[
+  {q:"친구가 저한테 어디에 ___ 물어봤어요.",h:"살다",a:["사냐고","사느냐고"],en:"My friend asked me where I live."},
+  {q:"선생님이 숙제를 ___ 물어보셨어요.",h:"하다, past",a:["했냐고","했느냐고"],en:"The teacher asked whether I'd done my homework."},
+  {q:"엄마가 밥 ___ 물어봤어요.",h:"먹다, past",a:["먹었냐고","먹었느냐고"],en:"Mom asked whether I'd eaten."},
+  {q:"동료가 저한테 ___ 물어봤어요.",h:"괜찮다",a:["괜찮냐고","괜찮으냐고"],en:"My colleague asked if I was okay."}]},
+{id:"rago",form:"-(으)라고 하다 (reported commands)",meaning:"(someone) told me to …",
+ notes:"Vowel/ㄹ stem + 라고 (쉬라고, 만들라고); consonant stem + 으라고 (읽으라고). Negative: -지 말라고. \"Give me\" becomes 달라고 (for me) / 주라고 (for someone else). Short form: -(으)래요.",
+ ex:[["의사가 푹 쉬라고 했어요.","The doctor told me to get plenty of rest."]],
+ drills:[
+  {q:"의사가 푹 ___ 했어요.",h:"쉬다",a:["쉬라고"],en:"The doctor told me to rest well."},
+  {q:"선생님이 이 책을 ___ 하셨어요.",h:"읽다",a:["읽으라고"],en:"The teacher told us to read this book."},
+  {q:"엄마가 일찍 ___ 했어요.",h:"자다",a:["자라고"],en:"Mom told me to go to bed early."},
+  {q:"친구가 걱정하지 ___ 했어요.",h:"말다",a:["말라고"],en:"My friend told me not to worry."}]},
+{id:"jago",form:"-자고 하다 (reported suggestions)",meaning:"(someone) suggested that we …",
+ notes:"Stem + 자고: 보자고, 먹자고. Negative: -지 말자고. Short form: -재요.",
+ ex:[["친구가 같이 영화 보자고 했어요.","My friend suggested we watch a movie together."]],
+ drills:[
+  {q:"친구가 같이 영화 ___ 했어요.",h:"보다",a:["보자고"],en:"My friend suggested we watch a movie together."},
+  {q:"동료가 점심을 같이 ___ 했어요.",h:"먹다",a:["먹자고"],en:"A colleague suggested we have lunch together."},
+  {q:"민수 씨가 주말에 등산 ___ 했어요.",h:"가다",a:["가자고"],en:"Minsu suggested going hiking this weekend."},
+  {q:"우리 내일 ___ 했잖아요.",h:"만나다",a:["만나자고"],en:"We said we'd meet tomorrow, remember?"}]},
+{id:"giwihaeseo",form:"-기 위해(서)",meaning:"in order to (formal, purpose)",
+ notes:"Action stem + 기 위해서 (or 위해): 지키기 위해서. Noun: N을/를 위해서 (건강을 위해서). More formal than -(으)려고, and it can be followed by commands.",
+ ex:[["건강을 지키기 위해서 운동해요.","I exercise to stay healthy."]],
+ drills:[
+  {q:"건강을 ___ 매일 운동해요.",h:"지키다",a:["지키기 위해서","지키기 위해"],en:"I exercise every day to stay healthy."},
+  {q:"돈을 ___ 아르바이트를 해요.",h:"모으다",a:["모으기 위해서","모으기 위해"],en:"I work a part-time job to save money."},
+  {q:"시험에 ___ 열심히 공부했어요.",h:"합격하다",a:["합격하기 위해서","합격하기 위해"],en:"I studied hard to pass the exam."},
+  {q:"꿈을 ___ 노력하고 있어요.",h:"이루다",a:["이루기 위해서","이루기 위해"],en:"I'm working hard to achieve my dream."}]},
+{id:"dorok",form:"-도록",meaning:"so that, in order that; until (to the point that)",
+ notes:"Stem + 도록: 걸리지 않도록, 들리도록. Often the goal concerns a state or another person. Also \"until\": 밤늦도록 = until late at night.",
+ ex:[["감기에 안 걸리도록 따뜻하게 입으세요.","Dress warmly so you don't catch a cold."]],
+ drills:[
+  {q:"감기에 안 ___ 따뜻하게 입으세요.",h:"걸리다",a:["걸리도록"],en:"Dress warmly so you don't catch a cold."},
+  {q:"잊지 ___ 메모하세요.",h:"않다",a:["않도록"],en:"Write it down so you don't forget."},
+  {q:"아기가 잘 ___ 조용히 해 주세요.",h:"자다",a:["자도록"],en:"Please be quiet so the baby can sleep."},
+  {q:"뒤에서도 잘 ___ 크게 말해 주세요.",h:"들리다",a:["들리도록"],en:"Please speak loudly so people in the back can hear."}]},
+{id:"nabo",form:"-나 보다 / -(으)ㄴ가 보다",meaning:"it seems / I guess (inference from evidence)",
+ notes:"Action verbs and 있다/없다: -나 보다 (오나 봐요, 맛있나 봐요). Adjectives: -(으)ㄴ가 보다 (바쁜가 봐요; colloquially also 바쁘나 봐요). Past: -았/었나 보다. Not for your own experience.",
+ ex:[["밖에 비가 오나 봐요.","It looks like it's raining outside."]],
+ drills:[
+  {q:"사람들이 우산을 쓰고 있네요. 비가 ___ 봐요.",h:"오다",a:["오나"],en:"People are using umbrellas. It must be raining."},
+  {q:"민수 씨가 전화를 안 받아요. ___ 봐요.",h:"바쁘다",a:["바쁜가","바쁘나"],en:"Minsu isn't answering. He must be busy."},
+  {q:"줄이 정말 길어요. 그 식당이 ___ 봐요.",h:"맛있다",a:["맛있나"],en:"The line is really long. That restaurant must be good."},
+  {q:"사무실에 아무도 없네요. 다 ___ 봐요.",h:"퇴근하다, past",a:["퇴근했나"],en:"No one's in the office. Everyone must have gone home."}]},
+{id:"euljido",form:"-(으)ㄹ지도 모르다",meaning:"might, may (possibility)",
+ notes:"Vowel/ㄹ stem + ㄹ지도 모르다 (올지도 몰라요); consonant stem + 을지도 (없을지도). Past: -았/었을지도 모르다.",
+ ex:[["내일 비가 올지도 몰라요.","It might rain tomorrow."]],
+ drills:[
+  {q:"내일 비가 ___ 몰라요.",h:"오다",a:["올지도"],en:"It might rain tomorrow."},
+  {q:"길이 막혀서 좀 ___ 몰라요.",h:"늦다",a:["늦을지도"],en:"Traffic is bad, so I might be a bit late."},
+  {q:"표가 ___ 모르니까 미리 예매하세요.",h:"없다",a:["없을지도"],en:"There might be no tickets left, so book in advance."},
+  {q:"그 사람은 벌써 ___ 몰라요.",h:"떠나다, past",a:["떠났을지도"],en:"That person might have already left."}]},
+{id:"deokbune",form:"-(으)ㄴ 덕분에",meaning:"thanks to (positive cause)",
+ notes:"Past modifier -(으)ㄴ + 덕분에 for actions (도와준 덕분에); present adjective modifier for states (좋은 덕분에). Noun: N 덕분에 (친구 덕분에). For negative causes use 때문에 or -는 바람에.",
+ ex:[["친구가 도와준 덕분에 이사를 빨리 끝냈어요.","Thanks to my friend's help, I finished moving quickly."]],
+ drills:[
+  {q:"친구가 ___ 덕분에 이사를 빨리 끝냈어요.",h:"도와주다",a:["도와준"],en:"Thanks to my friend helping, I finished moving quickly."},
+  {q:"매일 ___ 덕분에 실력이 많이 늘었어요.",h:"연습하다",a:["연습한"],en:"Thanks to practicing every day, I improved a lot."},
+  {q:"날씨가 ___ 덕분에 여행이 즐거웠어요.",h:"좋다",a:["좋은"],en:"Thanks to the good weather, the trip was fun."},
+  {q:"일찍 ___ 덕분에 차가 안 막혔어요.",h:"출발하다",a:["출발한"],en:"Thanks to leaving early, we didn't hit traffic."}]},
+{id:"barame",form:"-는 바람에",meaning:"because (of an unexpected event, with a bad result)",
+ notes:"Action stem + 는 바람에, even for past events: 늦잠을 자는 바람에 지각했어요. The result is usually negative and in the past. Not with commands.",
+ ex:[["늦잠을 자는 바람에 지각했어요.","I overslept, so I was late."]],
+ drills:[
+  {q:"늦잠을 ___ 바람에 지각했어요.",h:"자다",a:["자는"],en:"I overslept, so I was late."},
+  {q:"갑자기 차가 ___ 바람에 약속에 늦었어요.",h:"막히다",a:["막히는"],en:"Traffic suddenly got bad, so I was late."},
+  {q:"갑자기 비가 ___ 바람에 옷이 다 젖었어요.",h:"오다",a:["오는"],en:"It suddenly rained, so my clothes got soaked."},
+  {q:"휴대폰을 ___ 바람에 연락을 못 했어요.",h:"잃어버리다",a:["잃어버리는"],en:"I lost my phone, so I couldn't get in touch."}]},
+{id:"neundedo",form:"-는데도 / -(으)ㄴ데도",meaning:"even though, despite (doing)",
+ notes:"Same forms as -는데 + 도: 공부하는데도, 추운데도, 먹었는데도. Stresses an unexpected result.",
+ ex:[["열심히 공부하는데도 실력이 안 늘어요.","Even though I study hard, I'm not improving."]],
+ drills:[
+  {q:"열심히 ___ 실력이 안 늘어요.",h:"공부하다",a:["공부하는데도"],en:"Even though I study hard, I'm not improving."},
+  {q:"약을 ___ 아직 아파요.",h:"먹다, past",a:["먹었는데도"],en:"Even though I took medicine, it still hurts."},
+  {q:"날씨가 ___ 반팔을 입었어요.",h:"춥다",a:["추운데도"],en:"Even though it was cold, I wore short sleeves."},
+  {q:"배가 ___ 계속 먹어요.",h:"부르다",a:["부른데도"],en:"I keep eating even though I'm full."}]},
+{id:"eulsurok",form:"-(으)면 -(으)ㄹ수록",meaning:"the more …, the more …",
+ notes:"Vowel/ㄹ stem + ㄹ수록 (갈수록, 알수록); consonant stem + 을수록 (먹을수록). Often doubled: 배우면 배울수록. 갈수록 alone = \"increasingly\".",
+ ex:[["한국어는 배우면 배울수록 재미있어요.","The more I learn Korean, the more fun it is."]],
+ drills:[
+  {q:"한국어는 배우면 ___ 재미있어요.",h:"배우다",a:["배울수록"],en:"The more I learn Korean, the more fun it is."},
+  {q:"시간이 지나면 ___ 더 그리워요.",h:"지나다",a:["지날수록"],en:"The more time passes, the more I miss it."},
+  {q:"연습은 많이 ___ 좋아요.",h:"하다",a:["할수록"],en:"The more you practice, the better."},
+  {q:"그 사람은 알면 ___ 좋은 사람이에요.",h:"알다",a:["알수록"],en:"The more you get to know him, the nicer he is."}]},
+{id:"gineun",form:"-기는 하다 (-긴 하다)",meaning:"it is …, but … (conceding)",
+ notes:"Stem + 기는 하지만 / 기는 한데 (spoken 긴 한데): 비싸기는 하지만, 보기는 했는데. Admits one point before a \"but\".",
+ ex:[["맛있기는 한데 좀 짜요.","It's tasty, but a bit salty."]],
+ drills:[
+  {q:"이 가방은 ___ 하지만 품질이 좋아요.",h:"비싸다",a:["비싸기는","비싸긴"],en:"This bag is expensive, but the quality is good."},
+  {q:"그 영화를 ___ 했는데 기억이 안 나요.",h:"보다",a:["보기는","보긴"],en:"I did see that movie, but I don't remember it."},
+  {q:"한국어를 ___ 하는데 잘 못해요.",h:"하다",a:["하기는","하긴"],en:"I do speak Korean, but not well."},
+  {q:"___ 한데 좀 짜요.",h:"맛있다",a:["맛있기는","맛있긴"],en:"It's tasty, but a bit salty."}]},
+{id:"daesin",form:"-는 대신(에)",meaning:"instead of; in exchange for",
+ notes:"Action verbs: -는 대신 (보는 대신). Adjectives: -(으)ㄴ 대신 (싼 대신 = it's cheap, but in return…). Noun: N 대신.",
+ ex:[["영화를 보는 대신 책을 읽었어요.","I read a book instead of watching a movie."]],
+ drills:[
+  {q:"영화를 ___ 대신 책을 읽었어요.",h:"보다",a:["보는"],en:"I read a book instead of watching a movie."},
+  {q:"제가 요리를 ___ 대신 설거지는 네가 해.",h:"하다",a:["하는"],en:"I'll cook, and in exchange you do the dishes."},
+  {q:"이 집은 월세가 ___ 대신 좀 멀어요.",h:"싸다",a:["싼"],en:"This place is cheap, but in return it's a bit far."},
+  {q:"오늘 ___ 대신 내일 일찍 나올게요.",h:"쉬다",a:["쉬는"],en:"I'll come in early tomorrow in exchange for resting today."}]},
+{id:"deon",form:"-던",meaning:"used to …; was …ing (unfinished / habitual past modifier)",
+ notes:"Stem + 던 + noun: 다니던 학교 (the school I used to attend), 먹던 빵 (the bread I was eating). Compare -(으)ㄴ (completed): 먹은 빵 = the bread I ate (finished).",
+ ex:[["여기가 제가 다니던 학교예요.","This is the school I used to go to."]],
+ drills:[
+  {q:"여기가 제가 ___ 학교예요.",h:"다니다",a:["다니던"],en:"This is the school I used to go to."},
+  {q:"아까 ___ 빵 어디 있어요?",h:"먹다",a:["먹던"],en:"Where's the bread I was eating earlier?"},
+  {q:"어릴 때 자주 ___ 공원이에요.",h:"가다",a:["가던"],en:"It's the park I often went to as a kid."},
+  {q:"예전에 ___ 집이 이 근처에 있어요.",h:"살다",a:["살던"],en:"The house I used to live in is near here."}]}
+);
+
+// Level (1 = core review, 2 = intermediate, 3 = upper-intermediate) and topic for every point
+const GMETA={
+ aseo:[1,"Reasons & causes"],eunikka:[1,"Reasons & causes"],gittaemune:[2,"Reasons & causes"],neurago:[3,"Reasons & causes"],deokbune:[3,"Reasons & causes"],barame:[3,"Reasons & causes"],
+ jiman:[1,"Contrast & conditions"],eumyeon:[1,"Contrast & conditions"],geona:[1,"Contrast & conditions"],neunde:[2,"Contrast & conditions"],ado2:[2,"Contrast & conditions"],neundedo:[3,"Contrast & conditions"],eulsurok:[3,"Contrast & conditions"],gineun:[3,"Contrast & conditions"],daesin:[3,"Contrast & conditions"],
+ goitda:[1,"Time & sequence"],gijeone:[1,"Time & sequence"],eunhue:[1,"Time & sequence"],eulttae:[1,"Time & sequence"],gonaseo:[2,"Time & sequence"],myeonseo:[2,"Time & sequence"],neundongan:[2,"Time & sequence"],daga:[2,"Time & sequence"],jamaja:[2,"Time & sequence"],eunji:[2,"Time & sequence"],gisijak:[2,"Time & sequence"],aitda:[2,"Time & sequence"],
+ gosipda:[1,"Plans & intentions"],eulgeoyeyo:[1,"Plans & intentions"],eureo:[1,"Plans & intentions"],eulgeyo:[1,"Plans & intentions"],eulkkayo:[1,"Plans & intentions"],euryeogo:[2,"Plans & intentions"],ryeogohada:[2,"Plans & intentions"],girohada:[2,"Plans & intentions"],eullaeyo:[2,"Plans & intentions"],giwihaeseo:[3,"Plans & intentions"],dorok:[3,"Plans & intentions"],
+ aya:[1,"Ability, permission & obligation"],ado:[1,"Ability, permission & obligation"],myeonandoe:[1,"Ability, permission & obligation"],sudo:[1,"Ability, permission & obligation"],jimalda:[1,"Ability, permission & obligation"],jianhado:[2,"Ability, permission & obligation"],euljulalda:[2,"Ability, permission & obligation"],
+ eulgeotgatda:[2,"Guessing & impressions"],neungeotgatda:[2,"Guessing & impressions"],aboida:[2,"Guessing & impressions"],get:[2,"Guessing & impressions"],nabo:[3,"Guessing & impressions"],euljido:[3,"Guessing & impressions"],deoragoyo:[3,"Guessing & impressions"],
+ aboda:[1,"Experience & change"],jeogi:[2,"Experience & change"],gedoeda:[2,"Experience & change"],ajida:[2,"Experience & change"],pyeonida:[2,"Experience & change"],
+ ajuda:[1,"Speech style & nuance"],honorific:[1,"Speech style & nuance"],neyo:[1,"Speech style & nuance"],jiyo:[1,"Speech style & nuance"],janayo:[3,"Speech style & nuance"],
+ dago:[2,"Reported speech"],nyago:[2,"Reported speech"],rago:[2,"Reported speech"],jago:[2,"Reported speech"],
+ modifiers:[1,"Building sentences"],nominal:[2,"Building sentences"],neunji:[2,"Building sentences"],deon:[3,"Building sentences"],
+ eeseo:[1,"Particles"],euro:[1,"Particles"],compare:[1,"Particles"],doman:[1,"Particles"]
+};
+const GCATS=["Reasons & causes","Contrast & conditions","Time & sequence","Plans & intentions","Ability, permission & obligation","Guessing & impressions","Experience & change","Speech style & nuance","Reported speech","Building sentences","Particles"];
+GRAMMAR.forEach((g,i)=>{const m=GMETA[g.id]||[2,"Building sentences"];g.lv=m[0];g.cat=m[1];g.ord=i;});
+// learning order: core points first, then intermediate, then upper-intermediate
+GRAMMAR.sort((a,b)=>a.lv-b.lv||a.ord-b.ord);
+
+</script>
+<script>
+"use strict";
+const APP_VERSION="1.0.0";
+// ---------- utilities ----------
+const $=s=>document.querySelector(s);
+const view=()=>$("#view");
+const DAY=864e5;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s||"").normalize("NFC").replace(/[\s.,!?~。…'"“”‘’()]/g,"");
+function dayKey(t){const d=t?new Date(t):new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function startOfDay(t){const d=new Date(t);d.setHours(0,0,0,0);return d.getTime();}
+function endOfToday(){const d=new Date();d.setHours(23,59,59,999);return d.getTime();}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),1800);}
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+
+// ---------- state ----------
+const LS_KEY="yeonseup.v1";
+function defaultState(){return{v:1,settings:{newVocab:10,newGrammar:1,production:true},cards:{},seenG:{},custom:[],log:{},mistakes:[],writes:[],updatedAt:0};}
+function hydrate(x){const d=defaultState();if(!x||typeof x!=="object")return d;const o=Object.assign(d,x);o.settings=Object.assign(defaultState().settings,x.settings||{});return o;}
+let S=defaultState();
+try{const r=localStorage.getItem(LS_KEY);if(r)S=hydrate(JSON.parse(r));}catch(e){}
+function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS_KEY,JSON.stringify(S));}catch(e){}scheduleRemote();}
+function logToday(){const k=dayKey();return S.log[k]||(S.log[k]={rev:0,ok:0,newV:0,newG:0});}
+function allVocab(){return VOCAB.concat(S.custom||[]);}
+function vocabByKo(ko){return allVocab().find(w=>w[0]===ko);}
+const G=Object.fromEntries(GRAMMAR.map(g=>[g.id,g]));
+
+// ---------- standalone: no cloud sync ----------
+const REMOTE=null;
+function scheduleRemote(){}
+function setSync(cls,txt){const el=$("#sync");el.className="sync "+cls;el.querySelector("span").textContent=txt;}
+function updateOnline(){navigator.onLine?setSync("ok","online"):setSync("","offline");}
+window.addEventListener("online",updateOnline);window.addEventListener("offline",updateOnline);updateOnline();
+
+// ---------- audio: the phone's built-in Korean voice ----------
+let KO_VOICE=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();KO_VOICE=vs.find(v=>/^ko/i.test(v.lang)&&/premium|enhanced|yuna|google/i.test(v.name))||vs.find(v=>/^ko/i.test(v.lang))||null;}catch(e){}}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="ko-KR";if(KO_VOICE)u.voice=KO_VOICE;u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+const canSpeak=()=>("speechSynthesis" in window);
+function spkBtn(text){return canSpeak()?`<button class="icon" data-say="${esc(text)}" aria-label="Listen">${SPK}</button>`:"";}
+
+// ---------- Claude feedback via your own API key (stored only on this device) ----------
+const KEY_LS="yeonseup.apikey";
+function apiKey(){try{return localStorage.getItem(KEY_LS)||"";}catch(e){return"";}}
+let SAMPLE=apiKey()?true:null;
+async function ask(prompt){
+  const key=apiKey();if(!key)throw{code:"not_granted"};
+  if(!navigator.onLine)throw{code:"offline"};
+  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:"claude-sonnet-5-5",max_tokens:1200,messages:[{role:"user",content:prompt}]})});
+  if(res.status===401)throw{code:"bad_key"};
+  if(res.status===429)throw{code:"rate_limited"};
+  if(!res.ok)throw{code:"http",message:res.status};
+  const j=await res.json();
+  const t=(j.content||[]).map(c=>c.text||"").join("");
+  const m=t.match(/\{[\s\S]*\}/);
+  if(!m)throw{code:"parse",message:t};
+  return JSON.parse(m[0]);
+}
+function errText(e){return e&&e.code==="offline"?"You're offline — Claude feedback needs internet.":e&&e.code==="bad_key"?"Your API key was rejected. Check it under Progress → Claude feedback.":e&&e.code==="rate_limited"?"Too many requests — try again in a minute.":"Couldn't reach Claude right now.";}
+
+// ---------- spaced repetition ----------
+// g: 0 again, 1 hard, 2 good, 3 easy
+function schedule(id,g){
+  const now=Date.now();
+  const c=S.cards[id]||{ivl:0,ease:2.5,reps:0,lapses:0,due:now};
+  if(g===0){if(c.reps>0)c.lapses++;c.reps=0;c.ivl=0;c.ease=Math.max(1.3,c.ease-.2);c.due=now+5*60e3;}
+  else{
+    let ivl;
+    if(c.reps===0)ivl=g===3?4:1;
+    else if(c.reps===1)ivl=g===1?2:g===2?3:6;
+    else ivl=g===1?c.ivl*1.2:g===2?c.ivl*c.ease:c.ivl*c.ease*1.3;
+    if(g===1)c.ease=Math.max(1.3,c.ease-.15);
+    if(g===3)c.ease=Math.min(3.2,c.ease+.15);
+    c.ivl=Math.max(1,Math.round(ivl));c.reps++;
+    c.due=startOfDay(now)+c.ivl*DAY+4*3600e3;
+  }
+  S.cards[id]=c;
+  return c;
+}
+function preview(id,g){const keep=S.cards[id]?{...S.cards[id]}:null;const c=schedule(id,g);const out=g===0?"5m":c.ivl+"d";if(keep)S.cards[id]=keep;else delete S.cards[id];return out;}
+function dueIds(prefix){const end=endOfToday();return Object.keys(S.cards).filter(id=>id.startsWith(prefix)&&S.cards[id].due<=end).sort((a,b)=>S.cards[a].due-S.cards[b].due);}
+function newVocabAvailable(){
+  const L=logToday();let quota=Math.max(0,S.settings.newVocab-L.newV);const out=[];
+  for(const w of allVocab()){if(quota<=0)break;if(!S.cards["v|"+w[0]+"|r"]){out.push("v|"+w[0]+"|r");quota--;}}
+  return out;
+}
+function nextGrammarPoint(){return GRAMMAR.find(g=>!S.seenG[g.id]);}
+function grammarNewQuota(){return Math.max(0,S.settings.newGrammar-logToday().newG);}
+
+// ---------- sessions ----------
+let SESSION=null;
+function startVocab(){
+  const due=dueIds("v|").filter(id=>S.settings.production||id.endsWith("|r"));
+  const fresh=newVocabAvailable();
+  const q=[];let fi=0;
+  due.forEach((id,i)=>{q.push({id});if(i%3===2&&fi<fresh.length)q.push({id:fresh[fi++],isNew:true});});
+  while(fi<fresh.length)q.push({id:fresh[fi++],isNew:true});
+  if(!q.length){toast("Nothing due — come back later");return;}
+  SESSION={kind:"vocab",queue:q,done:0,total:q.length,ok:0,wrong:[]};nextItem();
+}
+function startGrammar(forceId){
+  const q=shuffle(dueIds("g|")).map(id=>({id}));
+  const add=forceId?G[forceId]:(grammarNewQuota()>0?nextGrammarPoint():null);
+  if(add&&!S.seenG[add.id]){
+    const drills=add.drills.map((_,i)=>({id:"g|"+add.id+"|"+i,isNew:true}));
+    q.unshift({lesson:add.id},...drills);
+  }else if(forceId){q.unshift({lesson:forceId,review:true});}
+  if(!q.length){toast("Nothing due — learn a new point from the Grammar tab");return;}
+  SESSION={kind:"grammar",queue:q,done:0,total:q.filter(x=>!x.lesson).length,ok:0,wrong:[],forced:!!forceId};nextItem();
+}
+function nextItem(){
+  if(!SESSION)return;
+  const it=SESSION.queue.shift();
+  if(!it){finish();return;}
+  SESSION.cur=it;
+  if(it.lesson)return renderLesson(it.lesson,true,it.review);
+  const [kind,key,sub]=it.id.split("|");
+  if(kind==="v")return sub==="r"?renderRecog(it,key):renderProd(it,key);
+  return renderCloze(it,key,+sub);
+}
+function answer(g,given,expected){
+  const it=SESSION.cur,L=logToday();
+  if(it.isNew&&!it.counted){it.counted=true;if(it.id.startsWith("v|"))L.newV++;}
+  L.rev++;if(g>0){L.ok++;SESSION.ok++;}
+  schedule(it.id,g);
+  if(g===0){
+    SESSION.wrong.push(it.id);
+    S.mistakes.push({t:Date.now(),id:it.id,given:given||"",expected:expected||""});
+    if(S.mistakes.length>150)S.mistakes=S.mistakes.slice(-150);
+    const pos=Math.min(SESSION.queue.length,3+Math.floor(Math.random()*3));
+    SESSION.queue.splice(pos,0,{id:it.id,counted:true,retry:true});
+  }else{
+    if(!it.retry)SESSION.done++;
+    // unlock production card once a word is recognised
+    if(it.id.endsWith("|r")&&S.settings.production){const p=it.id.slice(0,-1)+"p";if(!S.cards[p])S.cards[p]={ivl:0,ease:2.5,reps:0,lapses:0,due:startOfDay(Date.now())+DAY+4*3600e3};}
+  }
+  if(g===0&&!it.retry)SESSION.done++;
+  save();nextItem();
+}
+function finish(){
+  const s=SESSION;SESSION=null;
+  const wrongUniq=[...new Set(s.wrong)];
+  view().innerHTML=`<h1>수고했어요!</h1><p class="sub">Session done.</p>
+  <div class="stat"><div><b>${s.total}</b><span>items</span></div><div><b>${wrongUniq.length}</b><span>missed</span></div><div><b>${streak()}</b><span>day streak</span></div></div>
+  ${wrongUniq.length?`<h2>Worth another look</h2><div class="card"><ul class="list">${wrongUniq.map(id=>`<li><span>${labelFor(id)}</span></li>`).join("")}</ul></div>`:""}
+  <div class="row" style="margin-top:18px"><a class="btn primary" href="#today">Back to today</a></div>`;
+  window.scrollTo(0,0);
+}
+function labelFor(id){
+  const [k,key,sub]=id.split("|");
+  if(k==="v"){const w=vocabByKo(key);return `<span class="ko">${esc(key)}</span> <span class="muted">— ${esc(w?w[1]:"")}</span>`;}
+  const g=G[key];if(!g)return esc(id);const d=g.drills[+sub];
+  return `<span class="ko">${esc(d.q.replace("___",d.a[0]))}</span> <span class="pill n">${esc(g.form)}</span>`;
+}
+function progressBar(){if(!SESSION)return"";const p=SESSION.total?Math.min(100,SESSION.done/SESSION.total*100):0;
+  return `<div class="spread small muted"><span>${SESSION.kind==="vocab"?"Vocabulary":"Grammar"} · ${Math.min(SESSION.done,SESSION.total)}/${SESSION.total}</span><a href="#today" class="muted" data-quit>End</a></div><div class="progress"><i style="width:${p}%"></i></div>`;}
+function gradeButtons(id,correct){
+  const labels=[["Again",0],["Hard",1],["Good",2],["Easy",3]];
+  const set=correct===false?[labels[0],labels[2]]:correct===true?labels.slice(1):labels;
+  const sug=correct===false?0:2;
+  return `<div class="grades ${set.length===3?"three":""}" ${set.length===2?'style="grid-template-columns:1fr 1fr"':""}>${set.map(([l,g])=>`<button class="btn ${g===sug?"sug":""}" data-g="${g}">${correct===false&&g===2?"I was right":l}<small>${preview(id,g)}</small></button>`).join("")}</div>`;
+}
+
+// ---------- item renderers ----------
+function renderRecog(it,ko){
+  const w=vocabByKo(ko);if(!w){nextItem();return;}
+  view().innerHTML=progressBar()+`<div class="card" style="text-align:center;padding:30px 18px">
+    ${it.isNew?'<span class="pill">new word</span>':'<span class="pill n">Korean → English</span>'}
+    <div class="big">${esc(w[0])}</div><div>${spkBtn(w[0])}</div>
+    <div id="rev" class="hide"><p style="font-size:20px;margin:14px 0 6px">${esc(w[1])}</p>
+      ${w[2]?`<div class="ex" style="text-align:left"><div class="ko">${esc(w[2])} ${spkBtn(w[2])}</div><div class="muted small">${esc(w[3]||"")}</div></div>`:""}</div>
+  </div>
+  <div id="act"><button class="btn primary block" id="show">Show meaning <span class="muted small">(space)</span></button></div>`;
+  $("#show").onclick=()=>{$("#rev").classList.remove("hide");$("#act").innerHTML=gradeButtons(it.id,null);if(it.isNew)speak(w[0]);};
+}
+function renderProd(it,ko){
+  const w=vocabByKo(ko);if(!w){nextItem();return;}
+  view().innerHTML=progressBar()+`<div class="card">
+    <span class="pill n">English → Korean</span>
+    <p style="font-size:24px;margin:14px 0 4px;font-weight:500">${esc(w[1])}</p>
+    ${w[3]?`<p class="muted small">e.g. “${esc(w[3])}”</p>`:""}
+    <form id="f"><input type="text" id="in" class="answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="한국어로…" lang="ko"></form>
+    <div id="res"></div></div><div id="act"><button class="btn primary block" id="chk">Check</button><button class="btn ghost block" id="idk" style="margin-top:8px">I don't know</button></div>`;
+  const check=(given)=>{
+    const ok=given!==null&&norm(given)===norm(w[0]);
+    $("#in").disabled=true;
+    $("#res").innerHTML=`<div class="verdict ${ok?"ok":"no"}">${ok?"맞아요 — correct":"Answer"}</div>
+      <div class="spread"><span class="ko" style="font-size:28px">${esc(w[0])}</span>${spkBtn(w[0])}</div>
+      ${!ok&&given?`<div class="muted small">You wrote: <span class="ko">${esc(given)}</span></div>`:""}
+      ${w[2]?`<div class="ex"><div class="ko">${esc(w[2])} ${spkBtn(w[2])}</div><div class="muted small">${esc(w[3]||"")}</div></div>`:""}`;
+    $("#act").innerHTML=gradeButtons(it.id,ok);
+    $("#act").dataset.given=given||"";$("#act").dataset.exp=w[0];
+  };
+  $("#f").onsubmit=e=>{e.preventDefault();const v=$("#in").value.trim();if(v)check(v);};
+  $("#chk").onclick=()=>{const v=$("#in").value.trim();if(v)check(v);};
+  $("#idk").onclick=()=>check(null);
+  setTimeout(()=>$("#in")&&$("#in").focus(),30);
+}
+function renderCloze(it,gid,idx){
+  const g=G[gid];const d=g&&g.drills[idx];if(!d){nextItem();return;}
+  const [before,after]=d.q.split("___");
+  const w=Math.max(4,Math.max(...d.a.map(a=>a.length))+1);
+  view().innerHTML=progressBar()+`<div class="card">
+    <div class="spread"><span class="pill ${it.isNew?"":"n"}">${it.isNew?"new":"grammar"}</span><button class="btn ghost small" id="hint" style="padding:4px 10px">Show pattern</button></div>
+    <p class="muted small" id="pat" style="margin:8px 0 0">&nbsp;</p>
+    <form id="f" class="sent" style="margin:8px 0">${esc(before)}<input type="text" id="in" class="inline-in" style="width:${w}em" autocomplete="off" autocapitalize="off" spellcheck="false" lang="ko">${esc(after)}</form>
+    <p class="small"><span class="pill n">${esc(d.h)}</span></p>
+    <p class="muted">${esc(d.en)}</p>
+    <div id="res"></div></div><div id="act"><button class="btn primary block" id="chk">Check</button><button class="btn ghost block" id="idk" style="margin-top:8px">I don't know</button></div>`;
+  $("#hint").onclick=()=>{$("#pat").innerHTML=`<b>${esc(g.form)}</b> — ${esc(g.meaning)}`;};
+  const check=(given)=>{
+    const ok=given!==null&&d.a.some(a=>norm(a)===norm(given));
+    $("#in").disabled=true;
+    const full=before+d.a[0]+after;
+    $("#res").innerHTML=`<div class="verdict ${ok?"ok":"no"}">${ok?"맞아요 — correct":"Answer: "+esc(d.a[0])}</div>
+      <div class="ex"><div class="ko" style="font-size:19px">${esc(full)} ${spkBtn(full)}</div></div>
+      <div class="small"><b>${esc(g.form)}</b> — ${esc(g.meaning)}</div>
+      ${!ok&&SAMPLE&&given?`<button class="btn ghost small" id="why" style="margin-top:10px;padding:6px 12px">Why was mine wrong?</button><div id="whyout"></div>`:""}`;
+    $("#act").innerHTML=gradeButtons(it.id,ok);
+    $("#act").dataset.given=given||"";$("#act").dataset.exp=d.a[0];
+    const wb=$("#why");if(wb)wb.onclick=()=>explainMistake(g,d,given,full);
+  };
+  $("#f").onsubmit=e=>{e.preventDefault();const v=$("#in").value.trim();if(v)check(v);};
+  $("#chk").onclick=()=>{const v=$("#in").value.trim();if(v)check(v);};
+  $("#idk").onclick=()=>check(null);
+  setTimeout(()=>$("#in")&&$("#in").focus(),30);
+}
+async function explainMistake(g,d,given,full){
+  const out=$("#whyout");$("#why").remove();out.innerHTML=`<div class="fb muted">Asking Claude<span class="dots">…</span></div>`;
+  try{
+    const r=await ask(`You are a concise Korean grammar tutor for an intermediate learner whose explanations language is English.
+Exercise: fill the blank in "${d.q}" (hint: ${d.h}). Target grammar: ${g.form} (${g.meaning}). Expected answer: "${d.a.join('" or "')}". Full sentence: "${full}".
+The learner wrote: "${given}".
+Explain in 2-4 short sentences why the learner's form is wrong or unnatural here (conjugation, wrong grammar, spelling, tense…). If the learner's answer is actually also correct and natural, say so clearly.
+Reply ONLY with JSON: {"alsoCorrect": boolean, "explanation": "..."}`);
+    out.innerHTML=`<div class="fb">${r.alsoCorrect?'<b class="verdict ok">Claude thinks yours works too.</b> ':""}${esc(r.explanation)}</div>`;
+  }catch(e){out.innerHTML=`<div class="fb muted">${esc(errText(e))}</div>`;}
+}
+function renderLesson(gid,inSession,isReview){
+  const g=G[gid];
+  view().innerHTML=(inSession?progressBar():`<p><a href="#grammar" class="muted small">← All grammar</a></p>`)+`<div class="card">
+    <div class="row"><span class="pill">${inSession&&!isReview?"new grammar":S.seenG[gid]?"learned":"not started"}</span><span class="pill n">${esc(g.cat||"")} · ${LV[g.lv]||""}</span></div>
+    <div class="big" style="font-size:34px">${esc(g.form)}</div>
+    <p style="font-size:18px;margin:0 0 12px">${esc(g.meaning)}</p>
+    <p class="notes">${esc(g.notes)}</p>
+    ${g.ex.map(e=>`<div class="ex"><div class="ko">${esc(e[0])} ${spkBtn(e[0])}</div><div class="muted small">${esc(e[1])}</div></div>`).join("")}
+  </div>
+  <div class="row">${inSession?`<button class="btn primary block" id="go">Practice it</button>`
+    :S.seenG[gid]?`<button class="btn primary" id="drill">Drill this now</button>${SAMPLE?`<a class="btn" href="#write" data-wg="${gid}">Write a sentence</a>`:""}`
+    :`<button class="btn primary" id="learn">Learn this now</button>`}</div>
+  ${!inSession?`<h2>Practice sentences</h2><div class="card"><ul class="list">${g.drills.map((d,i)=>{const c=S.cards["g|"+gid+"|"+i];return `<li style="cursor:default"><span class="ko">${esc(d.q.replace("___",d.a[0]))}</span>${c?`<span class="pill ${c.reps>1?"j":"n"}">${c.reps>1?"solid":"learning"}</span>`:""}</li>`;}).join("")}</ul></div>`:""}`;
+  if($("#go"))$("#go").onclick=()=>{if(!isReview&&!S.seenG[gid]){S.seenG[gid]=Date.now();if(!SESSION.forced)logToday().newG++;save();}nextItem();};
+  if($("#learn"))$("#learn").onclick=()=>startGrammar(gid);
+  if($("#drill"))$("#drill").onclick=()=>{const q=shuffle(g.drills.map((_,i)=>({id:"g|"+gid+"|"+i,retry:false})));SESSION={kind:"grammar",queue:q,done:0,total:q.length,ok:0,wrong:[]};nextItem();};
+  window.scrollTo(0,0);
+}
+
+// ---------- tabs ----------
+function streak(){let n=0;let t=Date.now();if(!(S.log[dayKey(t)]&&S.log[dayKey(t)].rev))t-=DAY;while(S.log[dayKey(t)]&&S.log[dayKey(t)].rev){n++;t-=DAY;}return n;}
+function renderToday(){
+  const vd=dueIds("v|").filter(id=>S.settings.production||id.endsWith("|r")).length,vn=newVocabAvailable().length;
+  const gd=dueIds("g|").length,gp=grammarNewQuota()>0?nextGrammarPoint():null;
+  const L=logToday();
+  const h=new Date().getHours();const greet=h<11?"좋은 아침이에요":h<18?"안녕하세요":"좋은 저녁이에요";
+  view().innerHTML=`<h1>${greet}, Nik</h1><p class="sub">${L.rev?`${L.rev} review${L.rev===1?"":"s"} today · ${streak()} day streak`:streak()?`${streak()} day streak — keep it going`:"About 10 minutes a day is enough."}</p>
+  <div class="card"><div class="spread"><div><h2 style="margin:0">Vocabulary</h2><p class="muted small" style="margin:2px 0 0">${vd} due · ${vn} new</p></div>
+    <button class="btn ${vd+vn?"seal":""}" id="sv" ${vd+vn?"":"disabled"}>${vd+vn?"Start":"Done ✓"}</button></div></div>
+  <div class="card"><div class="spread"><div><h2 style="margin:0">Grammar</h2><p class="muted small" style="margin:2px 0 0">${gd} due${gp?` · new: <span class="ko">${esc(gp.form)}</span>`:""}</p></div>
+    <button class="btn ${gd||gp?"seal":""}" id="sg" ${gd||gp?"":"disabled"}>${gd||gp?"Start":"Done ✓"}</button></div></div>
+  ${SAMPLE?`<div class="card"><div class="spread"><div><h2 style="margin:0">Write a sentence</h2><p class="muted small" style="margin:2px 0 0">Use a grammar point in your own sentence; Claude corrects it.</p></div><a class="btn" href="#write">Write</a></div></div>`:""}
+  ${(!vd&&!vn&&!gd&&!gp)?`<p class="muted small">All done for today. Learn an extra grammar point from the Grammar tab, or raise your daily new limits in Progress.</p>`:""}`;
+  $("#sv").onclick=startVocab;$("#sg").onclick=()=>startGrammar();
+}
+let gLevel=0;
+const LV=["","Core","Intermediate","Upper-int."];
+function renderGrammarList(){
+  const seen=GRAMMAR.filter(g=>S.seenG[g.id]).length;
+  const nxt=nextGrammarPoint();
+  const item=g=>{const cs=g.drills.map((_,i)=>S.cards["g|"+g.id+"|"+i]).filter(Boolean);const solid=cs.length&&cs.every(c=>c.reps>1);
+    const status=S.seenG[g.id]?`<span class="pill ${solid?"j":""}">${solid?"solid":"learning"}</span>`:nxt&&nxt.id===g.id?`<span class="pill">up next</span>`:"";
+    return `<li data-open="${g.id}"><div><div class="ko" style="font-size:18px">${esc(g.form)}</div><div class="muted small">${esc(g.meaning)}</div></div><div style="text-align:right;flex-shrink:0">${status}<div class="muted" style="font-size:11px;margin-top:3px">${LV[g.lv]}</div></div></li>`;};
+  view().innerHTML=`<h1>문법</h1><p class="sub">${seen} of ${GRAMMAR.length} points learned. New points come in order — core review first, then intermediate, then upper-intermediate. Tap any point to read it, learn it early, or drill it.</p>
+  <div class="row" style="margin-bottom:6px">${[0,1,2,3].map(l=>`<button class="btn ${gLevel===l?"primary":""}" data-lv="${l}" style="padding:7px 12px;font-size:14px">${l?LV[l]:"All"}</button>`).join("")}</div>
+  ${GCATS.map(cat=>{const gs=GRAMMAR.filter(g=>g.cat===cat&&(!gLevel||g.lv===gLevel)).sort((a,b)=>a.lv-b.lv||a.ord-b.ord);if(!gs.length)return"";
+    const done=gs.filter(g=>S.seenG[g.id]).length;
+    return `<h2>${esc(cat)} <span class="muted small" style="font-family:var(--sans);font-weight:400">${done}/${gs.length}</span></h2><div class="card" style="padding:4px 18px"><ul class="list">${gs.map(item).join("")}</ul></div>`;}).join("")}`;
+  document.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{gLevel=+b.dataset.lv;renderGrammarList();});
+}
+let writeTarget=null;
+function renderWrite(){
+  if(!SAMPLE){view().innerHTML=`<h1>작문</h1><div class="card"><p>Write your own sentences and get them corrected by Claude. This needs an Anthropic API key (usually a few cents a month at this level of use).</p>
+    <ol class="small" style="padding-left:18px"><li>Go to <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>, add a little credit, and create a key.</li><li>Paste it below. It's stored only on this phone and sent only to Anthropic.</li></ol>
+    <input type="text" id="k" placeholder="sk-ant-…" autocomplete="off" spellcheck="false"><button class="btn primary" id="ks" style="margin-top:10px">Save key</button></div>`;
+    $("#ks").onclick=()=>{const v=$("#k").value.trim();if(!v)return;try{localStorage.setItem(KEY_LS,v);}catch(e){}SAMPLE=true;toast("Key saved");renderWrite();};return;}
+  const pool=GRAMMAR.filter(g=>S.seenG[g.id]);const list=pool.length?pool:GRAMMAR.slice(0,6);
+  if(!writeTarget||!G[writeTarget])writeTarget=list[Math.floor(Math.random()*list.length)].id;
+  const known=allVocab().filter(w=>S.cards["v|"+w[0]+"|r"]);const word=known.length?known[Math.floor(Math.random()*known.length)]:null;
+  const g=G[writeTarget];
+  view().innerHTML=`<h1>작문</h1><p class="sub">Write one sentence. Claude checks grammar, spelling and naturalness.</p>
+  <div class="card">
+    <label class="small muted">Grammar point</label>
+    <select id="gp">${GRAMMAR.map(x=>`<option value="${x.id}" ${x.id===writeTarget?"selected":""}>${esc(x.form)} — ${esc(x.meaning)}${S.seenG[x.id]?"":" (not learned yet)"}</option>`).join("")}</select>
+    ${word?`<p class="small" style="margin:12px 0 0">Bonus: also try to use <span class="ko" style="font-size:17px">${esc(word[0])}</span> <span class="muted">(${esc(word[1])})</span></p>`:""}
+    <p class="small muted" style="margin:10px 0 6px">Example: <span class="ko">${esc(g.ex[0][0])}</span></p>
+    <textarea id="txt" rows="3" lang="ko" placeholder="여기에 문장을 써 보세요…"></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="send">Check with Claude</button><button class="btn ghost" id="other">Another prompt</button></div>
+    <div id="out"></div></div>
+  ${S.writes.length?`<h2>Recent sentences</h2><div class="card"><ul class="list">${S.writes.slice(-8).reverse().map(w=>`<li style="display:block;cursor:default"><div class="ko">${esc(w.corrected||w.text)}</div><div class="muted small">${w.ok?"✓ correct":"✎ corrected"} · ${esc(G[w.g]?G[w.g].form:"")}</div></li>`).join("")}</ul></div>`:""}`;
+  $("#gp").onchange=e=>{writeTarget=e.target.value;renderWrite();};
+  $("#other").onclick=()=>{writeTarget=null;renderWrite();};
+  $("#send").onclick=async()=>{
+    const text=$("#txt").value.trim();if(!text)return;
+    $("#send").disabled=true;$("#out").innerHTML=`<div class="fb muted">Claude is reading it<span class="dots">…</span></div>`;
+    try{
+      const r=await ask(`You are a friendly but honest Korean tutor. The learner is intermediate, explanations in English.
+Task given to the learner: write one Korean sentence using the grammar ${g.form} (${g.meaning})${word?`, ideally also using the word ${word[0]} (${word[1]})`:""}.
+Learner's sentence: "${text}"
+Check: grammar (especially ${g.form}), conjugation, particles, spelling/spacing, and whether it sounds natural. Don't nitpick spacing alone as an error if meaning and grammar are right; mention it briefly.
+Reply ONLY with JSON:
+{"correct": boolean (true if grammatical and natural enough that a Korean would accept it),
+ "usedTarget": boolean (did they use ${g.form} correctly),
+ "corrected": "the corrected sentence (same as original if fine)",
+ "explanation": "2-5 short sentences in English: what's right, what's wrong and why",
+ "natural": "one more natural way a native speaker might say it",
+ "translation": "English translation of the corrected sentence"}`);
+      const ok=!!r.correct&&!!r.usedTarget;
+      S.writes.push({t:Date.now(),g:g.id,text,corrected:r.corrected,ok});if(S.writes.length>60)S.writes=S.writes.slice(-60);
+      const L=logToday();L.rev++;if(ok)L.ok++;save();
+      $("#out").innerHTML=`<div class="fb">
+        <div class="verdict ${ok?"ok":"no"}">${ok?"좋아요 — this works":"Almost — here's a fix"}</div>
+        ${r.corrected&&norm(r.corrected)!==norm(text)?`<p class="ko" style="font-size:19px;margin:6px 0">${esc(r.corrected)} ${spkBtn(r.corrected)}</p>`:""}
+        <p class="muted small" style="margin:0 0 8px">${esc(r.translation||"")}</p>
+        <p style="margin:0 0 8px">${esc(r.explanation||"")}</p>
+        ${r.natural?`<p class="small" style="margin:0">More natural: <span class="ko" style="font-size:17px">${esc(r.natural)}</span> ${spkBtn(r.natural)}</p>`:""}</div>`;
+    }catch(e){$("#out").innerHTML=`<div class="fb muted">${esc(errText(e))}</div>`;}
+    $("#send").disabled=false;
+  };
+}
+let wordFilter="";
+function wordStatus(w){const r=S.cards["v|"+w[0]+"|r"],p=S.cards["v|"+w[0]+"|p"];if(!r)return["new","n"];const best=Math.min(r.ivl||0,p?p.ivl||0:(S.settings.production?0:r.ivl||0));return best>=21?["known","j"]:["learning",""];}
+function renderWords(){
+  const all=allVocab();const f=norm(wordFilter).toLowerCase();
+  const shown=all.filter(w=>!f||norm(w[0]).includes(f)||w[1].toLowerCase().includes(wordFilter.toLowerCase()));
+  const counts={new:0,learning:0,known:0};all.forEach(w=>counts[wordStatus(w)[0]]++);
+  view().innerHTML=`<h1>단어</h1><p class="sub">${all.length} words · ${counts.learning} learning · ${counts.known} known</p>
+  <div class="card"><h2 style="margin-top:0">Add your own words</h2>
+    <p class="muted small" style="margin-top:0">One per line: <span class="ko">단어 = meaning</span>. ${SAMPLE?"Or just the Korean word — Claude fills in the meaning and an example.":""} Words you look up in Sajeon are a good source.</p>
+    <textarea id="add" rows="4" lang="ko" placeholder="망설이다 = to hesitate&#10;꾸준히"></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="addb">Add</button></div><div id="addout"></div></div>
+  <input type="text" id="flt" placeholder="Search…" value="${esc(wordFilter)}" style="margin:6px 0 12px">
+  <div class="card"><ul class="list">${shown.map(w=>{const [s,c]=wordStatus(w);return `<li data-say-li="${esc(w[0])}"><div><span class="ko" style="font-size:18px">${esc(w[0])}</span> <span class="muted small">${esc(w[1])}</span></div><span class="pill ${c}">${s}</span></li>`;}).join("")||'<li class="muted">No matches</li>'}</ul></div>`;
+  $("#flt").oninput=e=>{wordFilter=e.target.value;const pos=e.target.selectionStart;renderWords();const el=$("#flt");el.focus();el.setSelectionRange(pos,pos);};
+  $("#addb").onclick=addWords;
+}
+async function addWords(){
+  const lines=$("#add").value.split("\n").map(s=>s.trim()).filter(Boolean);if(!lines.length)return;
+  const have=new Set(allVocab().map(w=>w[0]));const ready=[],needs=[];
+  for(const l of lines){const parts=l.split(/\s*[=:\t]\s*/);const ko=parts[0].trim();if(!ko||have.has(ko))continue;
+    if(parts[1])ready.push([ko,parts[1],parts[2]||"",parts[3]||""]);else needs.push(ko);}
+  if(needs.length&&SAMPLE){
+    $("#addout").innerHTML=`<div class="fb muted">Claude is writing meanings and examples<span class="dots">…</span></div>`;
+    try{
+      const r=await ask(`For each Korean word or expression below, give a concise English meaning (most common senses, comma-separated) and one natural, simple example sentence in polite 해요체 with an English translation. Correct obvious spelling mistakes in the headword.
+Words: ${JSON.stringify(needs.slice(0,40))}
+Reply ONLY with JSON: {"items":[{"ko":"...","en":"...","ex":"...","exEn":"..."}]}`);
+      (r.items||[]).forEach(x=>{if(x&&x.ko&&!have.has(x.ko))ready.push([x.ko,x.en||"",x.ex||"",x.exEn||""]);});
+    }catch(e){needs.forEach(ko=>ready.push([ko,"(add meaning)","",""]));}
+  }else needs.forEach(ko=>ready.push([ko,"(add meaning)","",""]));
+  S.custom=(S.custom||[]).concat(ready);save();
+  toast(`Added ${ready.length} word${ready.length===1?"":"s"}`);renderWords();
+}
+function renderStats(){
+  const days=[];for(let i=13;i>=0;i--){const k=dayKey(Date.now()-i*DAY);days.push([k,(S.log[k]||{}).rev||0]);}
+  const max=Math.max(5,...days.map(d=>d[1]));
+  const tot=Object.values(S.log).reduce((a,l)=>({rev:a.rev+(l.rev||0),ok:a.ok+(l.ok||0)}),{rev:0,ok:0});
+  const learned=allVocab().filter(w=>S.cards["v|"+w[0]+"|r"]).length;
+  const weak=Object.entries(S.cards).filter(([,c])=>c.lapses>0).sort((a,b)=>b[1].lapses-a[1].lapses).slice(0,8);
+  const st=S.settings;
+  view().innerHTML=`<h1>기록</h1><p class="sub">${S.updatedAt?"Last practiced "+new Date(S.updatedAt).toLocaleString():"No practice yet."}</p>
+  <div class="stat"><div><b>${streak()}</b><span>day streak</span></div><div><b>${learned}</b><span>words started</span></div><div><b>${Object.keys(S.seenG).length}</b><span>grammar points</span></div></div>
+  <div class="card" style="margin-top:14px"><div class="spread small"><b>Last 14 days</b><span class="muted">${tot.rev?Math.round(tot.ok/tot.rev*100):0}% correct overall</span></div>
+    <div class="bars">${days.map(([k,v])=>`<div class="${v?"":"zero"}" style="height:${v/max*100}%" title="${k}: ${v}"></div>`).join("")}</div></div>
+  ${weak.length?`<h2>Trickiest items</h2><div class="card"><ul class="list">${weak.map(([id,c])=>`<li style="cursor:default"><span>${labelFor(id)}</span><span class="pill">${c.lapses}× missed</span></li>`).join("")}</ul></div>`:""}
+  <h2>Settings</h2><div class="card">
+    <div class="spread"><span>New words per day</span><select id="nv" style="width:auto">${[0,5,10,15,20,30].map(n=>`<option ${n===st.newVocab?"selected":""}>${n}</option>`).join("")}</select></div>
+    <div class="spread" style="margin-top:10px"><span>New grammar points per day</span><select id="ng" style="width:auto">${[0,1,2,3].map(n=>`<option ${n===st.newGrammar?"selected":""}>${n}</option>`).join("")}</select></div>
+    <div class="spread" style="margin-top:10px"><span>Also practice English → Korean (typing)</span><input type="checkbox" id="pr" ${st.production?"checked":""} style="width:22px;height:22px"></div>
+  </div>
+  <h2>Claude feedback</h2><div class="card">
+    <p class="small muted" style="margin-top:0">${apiKey()?"API key saved on this device (…"+esc(apiKey().slice(-4))+").":"No API key yet — the Write tab and \"Why was mine wrong?\" need one."}</p>
+    <div class="row"><input type="text" id="k2" placeholder="Paste a new key (sk-ant-…)" autocomplete="off" spellcheck="false" style="flex:1"><button class="btn" id="k2s">Save</button>${apiKey()?`<button class="btn ghost" id="k2r">Remove</button>`:""}</div></div>
+  <h2>Your data</h2><div class="card">
+    <p class="small muted" style="margin-top:0">Progress is saved on this phone only. Back it up now and then — and send the file to Claude when you ask for improvements. You can also paste a backup from the claude.ai version to carry your progress over.</p>
+    <div class="row"><button class="btn" id="dl">Download backup</button><button class="btn" id="exp">Copy backup</button><button class="btn" id="imp">Restore backup</button><button class="btn ghost" id="rst">Reset…</button></div>
+    <div id="dataout"></div></div>
+  <p class="muted small" style="text-align:center;margin-top:24px">Yeonseup v${APP_VERSION}</p>`;
+  $("#k2s").onclick=()=>{const v=$("#k2").value.trim();if(!v)return;try{localStorage.setItem(KEY_LS,v);}catch(e){}SAMPLE=true;toast("Key saved");renderStats();};
+  if($("#k2r"))$("#k2r").onclick=()=>{try{localStorage.removeItem(KEY_LS);}catch(e){}SAMPLE=null;toast("Key removed");renderStats();};
+  $("#dl").onclick=()=>{const blob=new Blob([JSON.stringify(S)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="yeonseup-backup-"+dayKey()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);};
+  $("#nv").onchange=e=>{st.newVocab=+e.target.value;save();};
+  $("#ng").onchange=e=>{st.newGrammar=+e.target.value;save();};
+  $("#pr").onchange=e=>{st.production=e.target.checked;save();};
+  $("#exp").onclick=async()=>{const txt=JSON.stringify(S);try{await navigator.clipboard.writeText(txt);toast("Backup copied");}catch(e){$("#dataout").innerHTML=`<textarea rows="4" style="margin-top:10px" readonly>${esc(txt)}</textarea>`;$("#dataout textarea").select();}};
+  $("#imp").onclick=()=>{$("#dataout").innerHTML=`<p class="small" style="margin:12px 0 6px">Choose a backup file, or paste the backup text:</p><input type="file" id="impf" accept=".json,application/json"><textarea id="impt" rows="4" style="margin-top:10px" placeholder="…or paste a backup here"></textarea><button class="btn primary" id="impgo" style="margin-top:8px">Restore</button>`;
+    const restore=txt=>confirmBox("Replace the progress on this phone with the backup?","Restore",()=>{try{const x=JSON.parse(txt);if(!x.cards)throw 0;S=hydrate(x);save();toast("Restored");renderStats();}catch(e){toast("That doesn't look like a backup");}});
+    $("#impf").onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(restore);};
+    $("#impgo").onclick=()=>{const t=$("#impt").value.trim();if(t)restore(t);};};
+  $("#rst").onclick=()=>confirmBox("Erase all progress? This can't be undone.","Erase",()=>{S=defaultState();save();toast("Progress reset");renderStats();});
+}
+function confirmBox(msg,label,fn){const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="card"><p>${esc(msg)}</p><div class="row"><button class="btn seal" id="cy">${esc(label)}</button><button class="btn" id="cn">Cancel</button></div></div>`;document.body.appendChild(m);m.querySelector("#cy").onclick=()=>{m.remove();fn();};m.querySelector("#cn").onclick=()=>m.remove();}
+
+// ---------- routing & events ----------
+function route(){
+  const t=(location.hash||"#today").slice(1);
+  const tab=["today","grammar","write","words","stats"].includes(t)?t:"today";
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===tab));
+  SESSION=null;
+  ({today:renderToday,grammar:renderGrammarList,write:renderWrite,words:renderWords,stats:renderStats})[tab]();
+}
+window.addEventListener("hashchange",route);
+document.addEventListener("click",e=>{
+  const say=e.target.closest("[data-say]");if(say){e.preventDefault();speak(say.dataset.say);return;}
+  const g=e.target.closest("[data-g]");if(g&&SESSION){const a=$("#act");answer(+g.dataset.g,a&&a.dataset.given,a&&a.dataset.exp);return;}
+  const op=e.target.closest("[data-open]");if(op){renderLesson(op.dataset.open,false);return;}
+  const wg=e.target.closest("[data-wg]");if(wg){writeTarget=wg.dataset.wg;if(location.hash==="#write"){e.preventDefault();route();}return;}
+  const li=e.target.closest("[data-say-li]");if(li){speak(li.dataset.sayLi);return;}
+  const q=e.target.closest("[data-quit]");if(q&&SESSION){e.preventDefault();SESSION=null;location.hash="#today";route();}
+});
+document.addEventListener("keydown",e=>{
+  if(!SESSION)return;
+  const tag=(e.target.tagName||"").toLowerCase();
+  if(e.key===" "&&tag!=="input"&&tag!=="textarea"&&$("#show")){e.preventDefault();$("#show").click();return;}
+  if(e.key==="Enter"&&tag!=="input"&&tag!=="textarea"){const s=$(".grades .sug");if(s){e.preventDefault();s.click();}else if($("#go")){e.preventDefault();$("#go").click();}}
+  if(tag!=="input"&&tag!=="textarea"&&["1","2","3","4"].includes(e.key)){const bs=document.querySelectorAll(".grades .btn");const b=bs[+e.key-1];if(b){e.preventDefault();b.click();}}
+});
+route();
+// offline support
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
+  navigator.serviceWorker.register("sw.js").then(reg=>{
+    reg.addEventListener("updatefound",()=>{const w=reg.installing;w&&w.addEventListener("statechange",()=>{if(w.state==="installed"&&navigator.serviceWorker.controller)toast("Updated — reopen the app to get the new version");});});
+  }).catch(()=>{});
+}
+</script>
+</body>
+</html>
